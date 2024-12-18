@@ -1,5 +1,6 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
+from .wallets import seed_wallets, undo_wallets  # Import wallet seeds
 
 from app.models.db import db, environment, SCHEMA
 
@@ -12,17 +13,19 @@ seed_commands = AppGroup('seed')
 @seed_commands.command('all')
 def seed():
     if environment == 'production':
-        # Before seeding in production, you want to run the seed undo 
-        # command, which will  truncate all tables prefixed with 
-        # the schema name (see comment in users.py undo_users function).
-        # Make sure to add all your other model's undo functions below
+        # Before seeding in production, undo all tables first
+        undo_wallets()
         undo_users()
+
+    # Seed tables
     seed_users()
-    # Add other seed functions here
+    seed_wallets()
+    print("Seeded all data successfully!")
 
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
+    undo_wallets()
     undo_users()
-    # Add other undo functions here
+    print("Reverted all seeded data!")

@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
-import ConnectWallet from "../components/ConnectWallet/connectWallet";
-import WalletManager from "../components/WalletManager/walletManager";
-import WalletManagerDocs from "../components/WalletManager/walletManagerDocs";
 import WalletCard from "../components/WalletManager/walletCard";
+import UserWalletBalance from "../components/UserWalletBalance/userWalletBalance";
+import Dashboard from "../components/Dashboard/dashboard";
 
 export default function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Retrieve the current user from Redux
+  const user = useSelector((state) => state.session.user);
+
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true));
   }, [dispatch]);
@@ -20,11 +23,15 @@ export default function Layout() {
     <>
       <ModalProvider>
         <Navigation />
-        {isLoaded && <Outlet />}
+        {isLoaded && (
+          <main>
+            <Dashboard />
+            {user && <UserWalletBalance user={user} />}
+            <WalletCard />
+            <Outlet />
+          </main>
+        )}
         <Modal />
-      
-   
-        <WalletCard/>
       </ModalProvider>
     </>
   );

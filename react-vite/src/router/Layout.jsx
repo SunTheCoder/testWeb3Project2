@@ -5,6 +5,9 @@ import { ModalProvider, Modal } from "../context/Modal";
 import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
 import ConnectWallet from "../components/ConnectWallet/connectWallet";
+import WalletManager from "../components/WalletManager/walletManager";
+import WalletManagerDocs from "../components/WalletManager/walletManagerDocs";
+import WalletCard from "../components/WalletManager/walletCard";
 
 export default function Layout() {
   const dispatch = useDispatch();
@@ -19,7 +22,10 @@ export default function Layout() {
         <Navigation />
         {isLoaded && <Outlet />}
         <Modal />
-        <ConnectWallet/>
+        {/* <ConnectWallet/> */}
+        <WalletManager/>
+        <WalletManagerDocs/>
+        <WalletCard/>
       </ModalProvider>
     </>
   );

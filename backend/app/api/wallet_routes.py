@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from app.models import Wallet, db
-from app.alchemy_utils import web3, get_balance  # Updated import path
+from app.alchemy_utils import get_balance  # Updated import path
 from web3 import Web3  # Import Web3 for address validation
 from eth_account.messages import encode_defunct  # Import for signature verification
 from cryptography.fernet import Fernet

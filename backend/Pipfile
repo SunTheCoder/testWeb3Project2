@@ -29,6 +29,7 @@ wtforms = "==3.0.1"
 zipp = "==3.17.0"
 cryptography = "*"
 web3 = "*"
+ruff = "*"
 
 [dev-packages]
 

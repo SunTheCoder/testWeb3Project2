@@ -1,35 +1,35 @@
-import { useState } from "react";
-import { thunkLogin } from "../../redux/session";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import "./LoginForm.css";
+import { useState } from 'react'
+import { thunkLogin } from '../../redux/session'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate, useNavigate } from 'react-router-dom'
+import './LoginForm.css'
 
 function LoginFormPage() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const sessionUser = useSelector((state) => state.session.user)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState({})
 
-  if (sessionUser) return <Navigate to="/" replace={true} />;
+  if (sessionUser) return <Navigate to="/" replace={true} />
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const serverResponse = await dispatch(
       thunkLogin({
         email,
         password,
-      })
-    );
+      }),
+    )
 
     if (serverResponse) {
-      setErrors(serverResponse);
+      setErrors(serverResponse)
     } else {
-      navigate("/");
+      navigate('/')
     }
-  };
+  }
 
   return (
     <>
@@ -60,7 +60,7 @@ function LoginFormPage() {
         <button type="submit">Log In</button>
       </form>
     </>
-  );
+  )
 }
 
-export default LoginFormPage;
+export default LoginFormPage

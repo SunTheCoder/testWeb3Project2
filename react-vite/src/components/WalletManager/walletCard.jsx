@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { ethers } from "ethers";
 
 const WalletCard = () => {
-  const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // Connect to MetaMask
   const connectWalletHandler = async () => {
@@ -17,52 +18,60 @@ const WalletCard = () => {
         method: "eth_requestAccounts",
       });
 
-      if (!accounts || accounts.length === 0) {
-        throw new Error("No accounts returned.");
-      }
+      const walletAddress = accounts[0];
+      console.log("Connected wallet:", walletAddress);
 
-      console.log("Connected account:", accounts[0]);
-      setDefaultAccount(accounts[0]);
-      await fetchBalance(accounts[0]);
+      // Send the wallet address to your backend
+      const response = await axios.post("/api/wallets/connect", {
+        walletAddress,
+      });
+
+      setDefaultAccount(walletAddress);
+      console.log("Wallet connected successfully:", response.data);
+      await fetchBalance(walletAddress);
     } catch (error) {
       console.error("Error connecting wallet:", error);
-      setErrorMessage(error.message);
+      setErrorMessage(error.response?.data?.error || error.message);
     }
   };
 
-  // Fetch user balance
-  const fetchBalance = async (address) => {
+  // Create a new wallet
+  const createWalletHandler = async () => {
+    try {
+      const response = await axios.post("/api/wallets/create");
+  
+      const { walletAddress, privateKey } = response.data;
+  
+      // Prompt the user to save their private key securely
+      alert(
+        `Your new wallet has been created!\n\nWallet Address: ${walletAddress}\nPrivate Key: ${privateKey}\n\nSave your private key securely!`
+      );
+  
+      console.log("Wallet created:", walletAddress);
+    } catch (error) {
+      console.error("Error creating wallet:", error.response?.data || error.message);
+    }
+  };
+  
+
+  // Fetch wallet balance
+  const fetchBalance = async (walletAddress) => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const balance = await provider.getBalance(address);
+      const balance = await provider.getBalance(walletAddress);
 
-      console.log("Raw balance (in Wei):", balance.toString()); // v6: Use `.toString()` for BigInt
-      const formattedBalance = ethers.formatEther(balance); // Updated to `ethers.formatEther`
-      console.log("Formatted balance (in ETH):", formattedBalance);
-
+      const formattedBalance = ethers.formatEther(balance);
       setUserBalance(formattedBalance);
     } catch (error) {
       console.error("Error fetching balance:", error);
-      setErrorMessage(error.message);
     }
   };
 
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", connectWalletHandler);
-    }
-
-    return () => {
-      if (window.ethereum) {
-        window.ethereum.removeListener("accountsChanged", connectWalletHandler);
-      }
-    };
-  }, []);
-
   return (
     <div>
-      <h4>Connect to MetaMask</h4>
+      <h4>Wallet Manager</h4>
       <button onClick={connectWalletHandler}>Connect Wallet</button>
+      <button onClick={createWalletHandler}>Create Wallet</button>
       <div>Address: {defaultAccount || "Not connected"}</div>
       <div>Balance: {userBalance !== null ? `${userBalance} ETH` : "N/A"}</div>
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}

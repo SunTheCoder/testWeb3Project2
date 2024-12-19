@@ -7,9 +7,9 @@ def seed_wallets():
     bobbie = User.query.filter_by(username='bobbie').first()
 
     # Create wallets for the users
-    wallet1 = Wallet(user_id=demo.id, wallet_address="0xDEMO123", api_key="demo_api_key")
-    wallet2 = Wallet(user_id=marnie.id, wallet_address="0xMARNIE123", api_key="marnie_api_key")
-    wallet3 = Wallet(user_id=bobbie.id, wallet_address="0xBOBBIE123", api_key="bobbie_api_key")
+    wallet1 = Wallet(user_id=demo.id, wallet_address="0xDEMO123", wallet_key="demo_wallet_key")
+    wallet2 = Wallet(user_id=marnie.id, wallet_address="0xMARNIE123", wallet_key="marnie_wallet_key")
+    wallet3 = Wallet(user_id=bobbie.id, wallet_address="0xBOBBIE123", wallet_key="bobbie_wallet_key")
 
     # Add to session and commit
     db.session.add(wallet1)

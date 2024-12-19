@@ -10,6 +10,10 @@ from cryptography.fernet import Fernet
 ENCRYPTION_KEY = Fernet.generate_key()
 cipher_suite = Fernet(ENCRYPTION_KEY)
 
+# print(f"Encryption Key: {ENCRYPTION_KEY}")
+# print(f"Encryption Key: {ENCRYPTION_KEY.decode()}")
+
+
 def encrypt_private_key(private_key):
     return cipher_suite.encrypt(private_key.encode('utf-8')).decode('utf-8')
 
@@ -44,6 +48,42 @@ def create_existing_wallet():
     return wallet.to_dict(), 201
 
 
+# @wallet_routes.route('/create', methods=['POST'])
+# @login_required
+# def create_wallet():
+#     try:
+#         # Check if the user already has a wallet
+#         if current_user.wallet:
+#             return jsonify({"error": "User already has a connected wallet"}), 400
+
+#         # Generate a new wallet
+#         new_wallet = Web3().eth.account.create()
+#         wallet_address = new_wallet.address
+#         private_key = new_wallet.key.hex()
+
+#         # Encrypt the private key before storing
+#         encrypted_private_key = encrypt_private_key(private_key)
+
+#         # Save the wallet to the database
+#         wallet = Wallet(
+#             user_id=current_user.id,
+#             wallet_address=wallet_address,
+#             wallet_key=encrypted_private_key
+#         )
+#         db.session.add(wallet)
+#         db.session.commit()
+
+#         # Return the wallet details to the user
+#         return jsonify({
+#             "walletAddress": wallet_address,
+#             "privateKey": private_key  # Display only once for the user to save
+#         }), 201
+
+#     except Exception as e:
+#         print(f"Error creating wallet: {e}")  # Log the error
+#         return jsonify({"error": "Internal server error"}), 500
+    
+
 @wallet_routes.route('/create', methods=['POST'])
 @login_required
 def create_wallet():
@@ -57,14 +97,10 @@ def create_wallet():
         wallet_address = new_wallet.address
         private_key = new_wallet.key.hex()
 
-        # Encrypt the private key before storing
-        encrypted_private_key = encrypt_private_key(private_key)
-
-        # Save the wallet to the database
+        # Save only the public wallet address
         wallet = Wallet(
             user_id=current_user.id,
-            wallet_address=wallet_address,
-            wallet_key=encrypted_private_key
+            wallet_address=wallet_address
         )
         db.session.add(wallet)
         db.session.commit()
@@ -72,12 +108,13 @@ def create_wallet():
         # Return the wallet details to the user
         return jsonify({
             "walletAddress": wallet_address,
-            "privateKey": private_key  # Display only once for the user to save
+            "privateKey": private_key  # This is shown to the user once
         }), 201
 
     except Exception as e:
-        print(f"Error creating wallet: {e}")  # Log the error
+        print(f"Error creating wallet: {e}")
         return jsonify({"error": "Internal server error"}), 500
+
 
 
 

@@ -42,9 +42,12 @@ const WalletCard = () => {
   
       const { walletAddress, privateKey } = response.data;
   
-      // Prompt the user to save their private key securely
+      // Alert the user with wallet details
       alert(
-        `Your new wallet has been created!\n\nWallet Address: ${walletAddress}\nPrivate Key: ${privateKey}\n\nSave your private key securely!`
+        `🎉 Wallet Created Successfully!\n\n` +
+        `Wallet Address: ${walletAddress}\n` +
+        `Private Key: ${privateKey}\n\n` +
+        `⚠️ Save your private key securely! You will not be able to recover it.`
       );
   
       console.log("Wallet created:", walletAddress);

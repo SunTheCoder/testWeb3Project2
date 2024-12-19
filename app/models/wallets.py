@@ -11,7 +11,7 @@ class Wallet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')), nullable=False, unique=True)
     wallet_address = db.Column(db.String(255), unique=True, nullable=False)
-    wallet_key = db.Column(db.Text, nullable=True)  # Updated from api_key to wallet_key
+    # wallet_key = db.Column(db.Text, nullable=True)  # Updated from api_key to wallet_key
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Relationship

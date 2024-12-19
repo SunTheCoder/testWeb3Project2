@@ -22,9 +22,8 @@ export default function Layout() {
         <Navigation />
         {isLoaded && <Outlet />}
         <Modal />
-        {/* <ConnectWallet/> */}
-        <WalletManager/>
-        <WalletManagerDocs/>
+      
+   
         <WalletCard/>
       </ModalProvider>
     </>

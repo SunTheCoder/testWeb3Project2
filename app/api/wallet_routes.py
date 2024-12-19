@@ -31,6 +31,45 @@ def create_wallet():
 
     return wallet.to_dict(), 201
 
+@wallet_routes.route("/verify", methods=["POST"])
+def verify_wallet():
+    data = request.get_json()
+    wallet_address = data.get("walletAddress")
+    signature = data.get("signature")
+    message = "Verify wallet ownership for My App"
+
+    if not wallet_address or not signature:
+        return {"errors": {"message": "Wallet address and signature are required"}}, 400
+
+    try:
+        # Encode the message
+        encoded_message = encode_defunct(text=message)
+
+        # Recover the address from the signature
+        recovered_address = Web3().eth.account.recover_message(encoded_message, signature=signature)
+
+        if recovered_address.lower() == wallet_address.lower():
+            return {"message": "Wallet ownership verified!"}, 200
+        else:
+            return {"errors": {"message": "Invalid signature"}}, 400
+    except Exception as e:
+        print("Error verifying wallet:", e)
+        return {"errors": {"message": "Verification failed"}}, 500
+    
+@wallet_routes.route("/balance", methods=["GET"])
+def get_wallet_balance():
+    wallet_address = request.args.get("walletAddress")
+
+    if not Web3.isAddress(wallet_address):
+        return {"errors": {"message": "Invalid wallet address"}}, 400
+
+    balance = get_balance(wallet_address)
+    if balance is None:
+        return {"errors": {"message": "Failed to fetch balance"}}, 500
+
+    return {"balance": str(balance)}, 200
+
+
 
 @wallet_routes.route('/', methods=['GET'])
 @login_required

@@ -10,6 +10,9 @@ from .api.auth_routes import auth_routes
 from .api.wallet_routes import wallet_routes 
 from .seeds import seed_commands
 from .config import Config
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 

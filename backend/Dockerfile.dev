@@ -1,0 +1,17 @@
+FROM python:3.9.18-alpine3.18
+RUN apk add build-base
+
+ENV DATABASE_URL=sqlite:///dev.db
+ENV FLASK_APP=app
+ENV FLASK_DEBUG=true
+ENV FLASK_RUN_PORT=8000
+
+WORKDIR /var/www
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+COPY . .
+EXPOSE 8000
+CMD ["flask", "run", "--host=0.0.0.0"]

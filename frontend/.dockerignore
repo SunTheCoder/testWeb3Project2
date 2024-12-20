@@ -5,5 +5,3 @@ node_modules
 .venv
 dev.db
 .gitignore
-**/Dockerfile*
-**/.dockerignore

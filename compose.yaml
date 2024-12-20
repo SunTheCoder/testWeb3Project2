@@ -1,0 +1,22 @@
+name: Web3PairProject
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: backend
+    env_file:
+      - ./backend/.env
+    ports:
+      - 8000:8000
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./frontend/.env
+    container_name: frontend
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend

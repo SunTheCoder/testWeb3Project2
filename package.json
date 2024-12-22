@@ -8,7 +8,7 @@
     "install:backend": "cd backend && pipenv install",
     "install": "npm run install:frontend && npm run install:backend",
     "check:backend": "ruff check backend/app",
-    "check:frontend": "npx eslint@8.57.1 frontend; npx prettier frontend --check",
+    "check:frontend": "npx eslint@8.57.1 frontend && npx prettier frontend --check",
     "check": "npm run check:frontend && npm run check:backend",
     "lint:frontend": "npx eslint@8.57.1 frontend --fix",
     "lint:backend": "ruff check backend/app --fix",

@@ -16,21 +16,23 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff
+          pip install -r backend/requirements.txt
 
       - name: Run Ruff for Python linting and formatting
         run: |
-          ruff check backend/app --fix
+          ruff check --output-format=github backend/app
         continue-on-error: true
 
       - name: Set up Node.js
@@ -38,18 +40,12 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Node.js dependencies
+      - name: Install Node.js dependencies for frontend
         run: npm install
         working-directory: frontend
 
       - name: Run ESLint for JavaScript linting
-        run: npx eslint src/
-        working-directory: frontend
-        continue-on-error: true
-
-      - name: Run Prettier for JavaScript formatting
-        run: npx prettier src --check
-        working-directory: frontend
+        run: npm run check:frontend
         continue-on-error: true
 
       - name: Upload linting and formatting results

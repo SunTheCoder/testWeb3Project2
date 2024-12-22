@@ -1,0 +1,26 @@
+{
+  "name": "web3uploader",
+  "version": "1.0.0",
+  "private":true,
+  "description": "",
+  "scripts": {
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && pipenv install",
+    "install": "npm run install:frontend && npm run install:backend",
+    "check:backend": "ruff check backend/app",
+    "check:frontend": "npx eslint@8.57.1 frontend; npx prettier frontend --check",
+    "check": "npm run check:frontend && npm run check:backend",
+    "lint:frontend": "npx eslint@8.57.1 frontend --fix",
+    "lint:backend": "ruff check backend/app --fix",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "format:frontend": "npx prettier frontend --write",
+    "format:backend": "ruff format backend/app",
+    "format": "npm run format:frontend && npm run format:backend",
+    "start": "docker compose up -d --build",
+    "stop": "docker compose down",
+    "reset": "docker compose down -v --remove-orphans && cd backend && rm -rf instance && pipenv run flask db upgrade && pipenv run flask seed all && docker compose up -d --build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -9,14 +9,25 @@ services:
       - ./backend/.env
     ports:
       - 8000:8000
+    volumes:
+      - ./backend:/var/www/
+    networks:
+      - web3pairproject
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
     env_file:
       - ./frontend/.env
+    volumes:
+      - ./frontend:/var/www/
     container_name: frontend
     ports:
       - 5173:5173
     depends_on:
       - backend
+    networks:
+      - web3pairproject
+networks:
+  web3pairproject:
+    driver: bridge

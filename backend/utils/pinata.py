@@ -2,8 +2,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from models import IpfsCache
-from models.db import db
+from app.models import IpfsCache
+from app.models.db import db
 
 load_dotenv()
 

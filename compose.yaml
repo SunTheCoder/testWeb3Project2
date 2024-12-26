@@ -18,7 +18,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     env_file:
-      - ./frontend/.env
+      - ./frontend/.env.local
     volumes:
       - ./frontend:/var/www/
     container_name: frontend

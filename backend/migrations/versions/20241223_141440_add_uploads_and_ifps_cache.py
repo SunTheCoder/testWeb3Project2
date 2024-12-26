@@ -37,6 +37,8 @@ def upgrade():
 		sa.Column('name', sa.String(length=255), nullable=False),
 		sa.Column('size', sa.Integer(), nullable=False),
 		sa.Column('ipfs_hash', sa.String(length=255), nullable=False),
+		sa.Column('mime_type', sa.String(length=100), nullable=False),
+		sa.Column('number_of_files', sa.Integer(), nullable=False),
 		sa.Column('timestamp', sa.String(length=255), nullable=False),
 		sa.Column('gateway_url', sa.String(length=255), nullable=False),
 		sa.Column('upload_metadata', sa.JSON(), nullable=False),

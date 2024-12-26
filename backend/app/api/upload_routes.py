@@ -8,39 +8,40 @@ from flask import Blueprint, jsonify, request
 
 from app.models import Upload
 from app.models.db import db
-from utils.pinata import store_ipfs_hash, verify_ipfs_hash
+from utils.file_helpers import create_new_upload, get_file_from_ipfs_files
+from utils.pinata import retrieve_ipfs_files, store_ipfs_hash, verify_ipfs_hash
 
 upload_routes = Blueprint('uploads', __name__)
 
 
-@upload_routes.route('/', methods=['POST'])
-def add_file_to_database():
-	data = request.get_json()
+@upload_routes.route('/<uid>', methods=['GET', 'POST'])
+def add_file_to_database(uid):
+	if request.method == 'POST':
+		data = request.get_json()
 
-	if not data:
-		return {'errors': 'No data received'}, 400
+		if not data:
+			return {'errors': 'No data received'}, 400
 
-	try:
-		cid = data['IpfsHash']
-		new_upload = Upload(
-			name=data['name'],
-			owner_id=data['userId'],
-			ipfs_hash=cid,
-			size=data['PinSize'],
-			timestamp=data['Timestamp'],
-			gateway_url=f'https://gateway.pinata.cloud/ipfs/{cid}',
-			upload_metadata=data['Metadata'],
-		)
+		try:
+			cid = data['IpfsHash']
+			file_info = get_file_from_ipfs_files(cid)
 
-		store_ipfs_hash(cid)
-		db.session.add(new_upload)
-		db.session.commit()
-		return jsonify({'uploads': new_upload.to_dict()}), 201
-	except Exception as e:
-		return {'errors': str(e)}, 500
+			if not file_info:
+				return jsonify({'error': 'File not found'}), 404
+
+			new_upload = create_new_upload(data, file_info)
+			store_ipfs_hash(cid)
+			db.session.add(new_upload)
+			db.session.commit()
+			return jsonify({'uploads': new_upload.to_dict()}), 201
+		except Exception as e:
+			return {'errors': str(e)}, 500
+
+	files = Upload.query.filter_by(owner_id=uid).all()
+	return jsonify([file.to_dict() for file in files]), 200
 
 
-@upload_routes.route('/files/<cid>')
+@upload_routes.route('/<cid>')
 def get_upload_information(cid):
 	if not cid or cid == '':
 		return 'Error: Not Found', 400

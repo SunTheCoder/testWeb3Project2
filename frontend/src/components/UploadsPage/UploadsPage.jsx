@@ -1,6 +1,9 @@
 import { pinata } from '../../utils/config'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+const gateway = import.meta.env.VITE_GATEWAY_URL
 
 const UploadsPage = () => {
   const user = useSelector((state) => state.session.user)
@@ -8,6 +11,22 @@ const UploadsPage = () => {
   const [metadata, setMetadata] = useState({})
   const [selectedFiles, setSelectedFiles] = useState([])
   const [metadataKVPairs, setMetadataKVPairs] = useState([])
+  const [allFiles, setAllFiles] = useState([])
+
+  useEffect(() => {
+    const getFiles = async () => {
+      try {
+        const res = await fetch('/uploads')
+        setAllFiles(res)
+      } catch (error) {
+        alert('Uh Oh! Something went wrong with getting your files!')
+        console.log(error)
+        setAllFiles([])
+      }
+    }
+
+    getFiles()
+  }, [])
 
   // Function to handle adding files to the selectedFiles state
   // Will use useCallback to memoize the function
@@ -192,6 +211,46 @@ const UploadsPage = () => {
           </>
         )}
       </form>
+
+      <section>
+        <h2>My Uploads</h2>
+        {allFiles.length > 0 ? (
+          <>
+            {allFiles.map((file) => (
+              <div key={file.id}>
+                <div>
+                  <h3>
+                    {' '}
+                    {file.mime_type === 'directory' && (
+                      <span>Directory:</span>
+                    )}{' '}
+                    {file.metadata.name}
+                  </h3>
+                </div>
+                <p>IpfsHash: {file.ipfs_pin_hash}</p>
+                <p>Total Size: {(file.size / 1024 / 1024).toFixed(2)}Mb</p>
+                {file.mime_type === 'directory' && (
+                  <span>
+                    Total number of files in this upload: {file.number_of_files}
+                  </span>
+                )}
+                {/* Delete Section */}
+                <div>
+                  <a
+                    href={`https://${gateway}/ipfs/${file.ipfs_pin_hash}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    View Upload{file.number_of_files > 1 ? 's' : ''}
+                  </a>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <>No uploads found</>
+        )}
+      </section>
     </div>
   )
 }

@@ -14,6 +14,8 @@ class Upload(db.Model):
 	ipfs_hash = db.Column(db.String(255), nullable=False)
 	timestamp = db.Column(db.String(255), nullable=False)
 	gateway_url = db.Column(db.String(255), nullable=False)
+	mime_type = db.Column(db.String(100), nullable=False)
+	number_of_files = db.Column(db.Integer, nullable=False)
 	upload_metadata = db.Column(db.JSON, nullable=False)
 
 	user = db.relationship('User', back_populates='uploads')
@@ -27,5 +29,7 @@ class Upload(db.Model):
 			'ipfsHash': self.ipfs_hash,
 			'timestamp': self.timestamp,
 			'gatewayUrl': self.gateway_url,
+			'mimeType': self.mime_type,
+			'numberOfFiles': self.number_of_files,
 			'uploadMetadata': self.upload_metadata,
 		}

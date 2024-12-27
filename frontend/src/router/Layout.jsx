@@ -23,11 +23,11 @@ export default function Layout() {
   return (
     <>
       <ModalProvider>
-        <Navigation />
+        <Navigation user={user}/>
         {isLoaded && (
           <main>
             
-            <WalletDrawer user={user}/>
+            {/* <WalletDrawer user={user}/> */}
             <Outlet />
           </main>
         )}

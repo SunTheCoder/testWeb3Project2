@@ -205,6 +205,8 @@ const WalletDrawer = ({user}) => {
         <Button
           main
           size="xs"
+         
+          ml={5}
         >
             
          <CiWallet/>

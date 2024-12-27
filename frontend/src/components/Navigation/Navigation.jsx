@@ -3,9 +3,10 @@ import ProfileButton from './ProfileButton'
 import './Navigation.css'
 import { HStack } from '@chakra-ui/react'
 import { ColorModeButton } from "@/components/ui/color-mode"
+import WalletDrawer from '../WalletManager/walletDrawer'
 
 
-function Navigation() {
+function Navigation({user}) {
   return (
     <ul>
       <HStack mt="10px">
@@ -15,6 +16,10 @@ function Navigation() {
 
       <li>
         <ProfileButton />
+      </li>
+
+      <li>
+        <WalletDrawer user={user}/>
       </li>
 
       <li>

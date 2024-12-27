@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ethers } from 'ethers';
 import { useSelector, useDispatch } from 'react-redux';
@@ -116,6 +116,7 @@ const WalletDrawer = ({user}) => {
 
       if (user?.wallet_address && user.wallet_address !== walletAddress) {
         setCurrentWallet(user.wallet_address);
+        setPromptUpdate(true);
         return;
       }
 
@@ -139,6 +140,34 @@ const WalletDrawer = ({user}) => {
       console.error('Error fetching balance:', error);
     }
   };
+
+   // Detect wallet changes
+   useEffect(() => {
+    const handleAccountsChanged = async (accounts) => {
+      if (accounts.length === 0) {
+        // Wallet disconnected
+        setDefaultAccount(null);
+        setUserBalance(null);
+        console.log('Wallet disconnected');
+      } else {
+        // Wallet switched
+        const walletAddress = accounts[0];
+        setDefaultAccount(walletAddress);
+        await dispatch(thunkUpdateUser(walletAddress)); // Update Redux store and backend
+        await fetchBalance(walletAddress);
+      }
+    };
+
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+    }
+
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      }
+    };
+  }, [dispatch]);
 
    // Update the wallet address
    const updateWalletHandler = async () => {

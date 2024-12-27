@@ -36,7 +36,16 @@ const CreateWallet = () => {
   return (
     <Box>
       {!walletCreated ? (
-        <Button size="xs" onClick={createWalletHandler}>Create Wallet</Button>
+        <Button 
+        
+        border="1px solid"
+        borderColor="teal.500"
+        borderRadius="sm" 
+        shadow="md" 
+        bg= "radial-gradient(circle,rgb(135, 16, 131),rgb(161, 77, 166))"
+            _hover={{background: "radial-gradient(circle,rgb(135, 11, 131),rgb(191, 97, 196))"}}
+            size="xs" 
+            onClick={createWalletHandler}>Create Wallet</Button>
       ) : (
         <Box>
           <Text>🎉 Wallet Created Successfully!</Text>

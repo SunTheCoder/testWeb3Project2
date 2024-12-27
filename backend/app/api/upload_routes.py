@@ -43,11 +43,17 @@ def add_to_database():
 		return {'errors': str(e)}, 500
 
 
-@upload_routes.route('/<cid>')
+@upload_routes.route('/<cid>', methods=['GET', 'DELETE'])
 def get_upload_information(cid):
 	if not cid or cid == '':
 		return 'Error: Not Found', 400
-
+	if request.method == 'DELETE':
+		upload = Upload.query.filter_by(ipfs_hash=cid).first()
+		if not upload:
+			return jsonify({'error': 'File not found'}), 404
+		db.session.delete(upload)
+		db.session.commit()
+		return jsonify({'message': 'deleted successfully'}), 200
 	try:
 		res = verify_ipfs_hash(cid)
 

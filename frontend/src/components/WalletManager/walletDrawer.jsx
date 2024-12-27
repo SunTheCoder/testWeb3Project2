@@ -206,6 +206,7 @@ const WalletDrawer = ({user}) => {
       <DrawerTrigger asChild>
         <Button
           main
+          fontWeight="bold"
           size="xs"
           color="gold"
           _dark={{ color: "gold" }}

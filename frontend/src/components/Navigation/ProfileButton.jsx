@@ -34,7 +34,7 @@ function ProfileButton() {
         {user ? (
           <>
             <MenuItem value="username" isDisabled>
-              {user.username}
+              Hi, {user.username}! 👋🏾
             </MenuItem>
             <MenuItem value="email" isDisabled>
               {user.email}

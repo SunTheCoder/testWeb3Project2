@@ -1,9 +1,9 @@
 import { pinata } from '../../utils/config'
 import { useCallback, useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-
-const gateway = import.meta.env.VITE_GATEWAY_URL
+import { useSelector } from 'react-redux'
+import ViewUploads from './ViewUploads'
+import UploadQueue from './UploadQueue'
+import FileUploader from './FileUploader'
 
 const UploadsPage = () => {
   const user = useSelector((state) => state.session.user)
@@ -33,10 +33,9 @@ const UploadsPage = () => {
 
   // Function to handle adding files to the selectedFiles state
   // Will use useCallback to memoize the function
-  const handleFiles = useCallback((e) => {
-    const files = Array.from(e.target.files)
-    setSelectedFiles((prevFiles) => [...prevFiles, ...files])
-    e.target.value = null
+  const handleFiles = useCallback((acceptedFiles) => {
+    // const files = Array.from(e.target.files)
+    setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles])
   }, [])
 
   // Function to delete file
@@ -156,6 +155,8 @@ const UploadsPage = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
+
+        {/* Dynamically add Metadata as KV Pairs */}
         <div>
           <h2>Additional Data</h2>
           {metadataKVPairs.map((pair, index) => (
@@ -190,69 +191,15 @@ const UploadsPage = () => {
         </div>
 
         {/* Upload zone */}
-        <div>
-          <h2>Uploads</h2>
-          <div>
-            <label>Upload File(s)</label>
-            <input type="file" multiple onChange={handleFiles} />
-          </div>
-
-          <button type="submit">Submit</button>
-        </div>
+        <FileUploader handleFiles={handleFiles} />
+        <button type="submit">Submit</button>
 
         {selectedFiles.length > 0 && (
-          <>
-            <h3>Files to waiting to upload</h3>
-            <ul>
-              {selectedFiles.map((file, index) => (
-                <li key={index}>
-                  <span>{file.name}</span>
-                  <span style={{ fontWeight: 'bold' }}>
-                    {file.size / 1024} Kb
-                  </span>
-                  <button onClick={() => deleteFile(index)}>X</button>
-                </li>
-              ))}
-            </ul>
-          </>
+          <UploadQueue selectedFiles={selectedFiles} deleteFile={deleteFile} />
         )}
       </form>
 
-      <section>
-        <h2>My Uploads</h2>
-        {allFiles?.length > 0 ? (
-          <>
-            {allFiles.map((file) => (
-              <div key={file.id}>
-                <div>
-                  <h3>
-                    {' '}
-                    {file.mimeType === 'directory' && (
-                      <span>Directory:</span>
-                    )}{' '}
-                    {file.name}
-                  </h3>
-                </div>
-                <p>IpfsHash: {file.ipfsHash}</p>
-                <p>Total Size: {(file.pinSize / 1024 / 1024).toFixed(2)}Mb</p>
-                {file.mimeType === 'directory' && (
-                  <span>
-                    Total number of files in this upload: {file.numberOfFiles}
-                  </span>
-                )}
-                {/* Delete Section */}
-                <div>
-                  <a href={file.gatewayUrl} target="_blank" rel="noreferrer">
-                    View Upload{file.numberOfFiles > 1 ? 's' : ''}
-                  </a>
-                </div>
-              </div>
-            ))}
-          </>
-        ) : (
-          <>No uploads found</>
-        )}
-      </section>
+      <ViewUploads allFiles={allFiles} />
     </div>
   )
 }

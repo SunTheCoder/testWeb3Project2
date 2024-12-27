@@ -19,6 +19,17 @@ def retrieve_ipfs_files():
 	return response.json()
 
 
+def store_ipfs_hash(ipfs_hash: str):
+	"""Stores IPFS hash in the database cache
+
+	Args:
+	    ipfs_hash: str
+	"""
+	new_ipfs_hash = IpfsCache(ipfs_hash=ipfs_hash)
+	db.session.add(new_ipfs_hash)
+	db.session.commit()
+
+
 def verify_ipfs_hash_in_cache(ipfs_hash: str) -> bool:
 	"""Checks if ipfs hash string is index in the database cache
 

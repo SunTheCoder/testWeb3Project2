@@ -14,18 +14,21 @@ const UploadsPage = () => {
   const [allFiles, setAllFiles] = useState([])
 
   useEffect(() => {
-    const getFiles = async () => {
-      try {
-        const res = await fetch('/uploads')
-        setAllFiles(res)
-      } catch (error) {
-        alert('Uh Oh! Something went wrong with getting your files!')
-        console.log(error)
-        setAllFiles([])
+    if (user) {
+      const getFiles = async () => {
+        try {
+          const res = await fetch(`/api/uploads/${user.id}`)
+          const data = await res.json()
+          console.log(data)
+          setAllFiles(data)
+        } catch (error) {
+          alert('Uh Oh! Something went wrong with getting your files!')
+          console.log(error)
+          setAllFiles([])
+        }
       }
+      getFiles()
     }
-
-    getFiles()
   }, [])
 
   // Function to handle adding files to the selectedFiles state
@@ -125,11 +128,14 @@ const UploadsPage = () => {
           throw new Error(error)
         }
 
-        alert('Upload succcessful')
+        const data = await res.json()
+
+        alert('Upload successful')
         setName('')
         setMetadata({})
         deleteAllKVPairs()
         setSelectedFiles([])
+        setAllFiles([...allFiles, data])
       }
     } catch (error) {
       alert('Uh Oh! Something went wrong')
@@ -214,34 +220,30 @@ const UploadsPage = () => {
 
       <section>
         <h2>My Uploads</h2>
-        {allFiles.length > 0 ? (
+        {allFiles?.length > 0 ? (
           <>
             {allFiles.map((file) => (
               <div key={file.id}>
                 <div>
                   <h3>
                     {' '}
-                    {file.mime_type === 'directory' && (
+                    {file.mimeType === 'directory' && (
                       <span>Directory:</span>
                     )}{' '}
-                    {file.metadata.name}
+                    {file.name}
                   </h3>
                 </div>
-                <p>IpfsHash: {file.ipfs_pin_hash}</p>
-                <p>Total Size: {(file.size / 1024 / 1024).toFixed(2)}Mb</p>
-                {file.mime_type === 'directory' && (
+                <p>IpfsHash: {file.ipfsHash}</p>
+                <p>Total Size: {(file.pinSize / 1024 / 1024).toFixed(2)}Mb</p>
+                {file.mimeType === 'directory' && (
                   <span>
-                    Total number of files in this upload: {file.number_of_files}
+                    Total number of files in this upload: {file.numberOfFiles}
                   </span>
                 )}
                 {/* Delete Section */}
                 <div>
-                  <a
-                    href={`https://${gateway}/ipfs/${file.ipfs_pin_hash}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    View Upload{file.number_of_files > 1 ? 's' : ''}
+                  <a href={file.gatewayUrl} target="_blank" rel="noreferrer">
+                    View Upload{file.numberOfFiles > 1 ? 's' : ''}
                   </a>
                 </div>
               </div>

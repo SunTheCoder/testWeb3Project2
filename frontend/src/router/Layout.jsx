@@ -14,6 +14,7 @@ export default function Layout() {
 
   // Retrieve the current user from Redux
   const user = useSelector((state) => state.session.user)
+  
 
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true))
@@ -25,7 +26,7 @@ export default function Layout() {
         <Navigation />
         {isLoaded && (
           <main>
-            <Dashboard />
+            <Dashboard user={user}/>
             {user && <UserWalletBalance user={user} />}
             <WalletCard />
             <Outlet />

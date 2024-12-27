@@ -252,12 +252,7 @@ const WalletDrawer = ({user}) => {
           <VStack spacing={4} align="start">
             <HStack>
               <Button
-                border="1px solid"
-                borderColor="teal.500"
-                borderRadius="sm"
-                shadow="md"
-                bg="radial-gradient(circle,rgb(135, 16, 131),rgb(161, 77, 166))"
-                _hover={{ background: 'radial-gradient(circle,rgb(135, 11, 131),rgb(191, 97, 196))' }}
+                main
                 size="xs"
                 onClick={connectWalletHandler}
               >

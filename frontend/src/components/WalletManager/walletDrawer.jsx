@@ -40,6 +40,7 @@ import {
   DrawerRoot,
   DrawerTitle,
   DrawerTrigger,
+  DrawerCloseTrigger
 } from '@/components/ui/drawer';
 import { CiWallet } from "react-icons/ci";
 import { LuInfo } from "react-icons/lu"
@@ -202,22 +203,15 @@ const WalletDrawer = ({user}) => {
       <DrawerBackdrop />
       <DrawerTrigger asChild>
         <Button
-          bg="radial-gradient(circle,rgb(135, 16, 131),rgb(161, 77, 166))"
-          _hover={{
-            background: 'radial-gradient(circle,rgb(135, 11, 131),rgb(191, 97, 196))',
-          }}
-          shadow="md"
-          border="1px solid"
-          borderColor="teal.500"
-          borderRadius="sm"
-          size="sm"
+          main
+          size="xs"
         >
             
          <CiWallet/>
         Wallet Manager
         </Button>
       </DrawerTrigger>
-      <DrawerContent borderRightRadius="lg" h="fit-content" mt="50px">
+      <DrawerContent borderRightRadius="lg" h="fit-content" mt="60px">
         <DrawerHeader>
           <DrawerTitle> {formattedUsername}'s Wallet Manager </DrawerTitle>
           <Collapsible.Root>
@@ -319,10 +313,12 @@ const WalletDrawer = ({user}) => {
           </VStack>
         </DrawerBody>
         <DrawerFooter>
-          <Button variant="outline" onClick={() => setDrawerOpen(false)}>
+          {/* <Button variant="outline" onClick={() => setDrawerOpen(false)}>
             Close
-          </Button>
+          </Button> */}
         </DrawerFooter>
+
+        <DrawerCloseTrigger />
       </DrawerContent>
     </DrawerRoot>
   );

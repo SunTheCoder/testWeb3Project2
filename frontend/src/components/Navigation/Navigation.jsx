@@ -2,6 +2,8 @@ import { NavLink } from 'react-router-dom'
 import ProfileButton from './ProfileButton'
 import './Navigation.css'
 import { HStack } from '@chakra-ui/react'
+import { ColorModeButton } from "@/components/ui/color-mode"
+
 
 function Navigation() {
   return (
@@ -13,6 +15,15 @@ function Navigation() {
 
       <li>
         <ProfileButton />
+      </li>
+
+      <li>
+        <ColorModeButton 
+          borderRadius="4xl"
+          position="absolute"
+          right="15px"
+          top="10px"
+          />
       </li>
     </HStack>
     </ul>

@@ -24,6 +24,7 @@ export const DrawerCloseTrigger = React.forwardRef(
         position='absolute'
         top='2'
         insetEnd='2'
+        borderRadius="lg"
         {...props}
         asChild
       >

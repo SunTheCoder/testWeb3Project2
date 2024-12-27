@@ -9,6 +9,8 @@ import UserWalletBalance from '../components/UserWalletBalance/userWalletBalance
 import Dashboard from '../components/Dashboard/dashboard'
 import WalletDrawer from '@/components/WalletManager/walletDrawer'
 
+
+
 export default function Layout() {
   const dispatch = useDispatch()
   const [isLoaded, setIsLoaded] = useState(false)
@@ -27,9 +29,11 @@ export default function Layout() {
         <Navigation />
         {isLoaded && (
           <main>
+            
             <Dashboard user={user}/>
             {user && <UserWalletBalance user={user} />}
             {/* <WalletCard /> */}
+            
             <WalletDrawer user={user}/>
             <Outlet />
           </main>

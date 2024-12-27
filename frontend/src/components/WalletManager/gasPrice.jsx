@@ -46,7 +46,7 @@ const GasPrice = () => {
   return (
     <VStack>
       
-      <Text color="white" fontSize="xs" textAlign="center">
+      <Text fontSize="xs" textAlign="center">
         {gasPrice ? `${gasPrice.toFixed(2)} Gwei` : 'Unable to fetch gas price'}
       </Text>
     </VStack>

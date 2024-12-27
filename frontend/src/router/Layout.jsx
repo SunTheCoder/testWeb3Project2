@@ -7,6 +7,7 @@ import Navigation from '../components/Navigation/Navigation'
 import WalletCard from '../components/WalletManager/walletCard'
 import UserWalletBalance from '../components/UserWalletBalance/userWalletBalance'
 import Dashboard from '../components/Dashboard/dashboard'
+import WalletDrawer from '@/components/WalletManager/walletDrawer'
 
 export default function Layout() {
   const dispatch = useDispatch()
@@ -29,6 +30,7 @@ export default function Layout() {
             <Dashboard user={user}/>
             {user && <UserWalletBalance user={user} />}
             <WalletCard />
+            <WalletDrawer/>
             <Outlet />
           </main>
         )}

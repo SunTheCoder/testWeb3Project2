@@ -42,7 +42,9 @@ import {
   DrawerTrigger,
   DrawerCloseTrigger
 } from '@/components/ui/drawer';
-import { CiWallet } from "react-icons/ci";
+
+import { TbWallet } from "react-icons/tb";
+
 import { LuInfo } from "react-icons/lu"
 
 import CreateWallet from './createWallet';
@@ -210,7 +212,7 @@ const WalletDrawer = ({user}) => {
           ml={5}
         >
             
-         <CiWallet/>
+            <TbWallet />
         Wallet Manager
         </Button>
       </DrawerTrigger>

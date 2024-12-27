@@ -1,14 +1,22 @@
 const SET_USER = 'session/setUser'
 const REMOVE_USER = 'session/removeUser'
+const UPDATE_USER = 'session/updateUser'
 
 const setUser = (user) => ({
   type: SET_USER,
   payload: user,
 })
 
+const updateUser = (updates) => ({
+  type: UPDATE_USER,
+  payload: updates,
+});
+
+
 const removeUser = () => ({
   type: REMOVE_USER,
 })
+
 
 export const thunkAuthenticate = () => async (dispatch) => {
   const response = await fetch('/api/auth/')
@@ -58,6 +66,32 @@ export const thunkSignup = (user) => async (dispatch) => {
   }
 }
 
+export const thunkUpdateUser = (walletAddress) => async (dispatch) => {
+  try {
+    const response = await fetch('/api/auth/update', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ wallet_address: walletAddress }),
+    });
+
+    if (response.ok) {
+      const updatedUser = await response.json();
+      dispatch(updateUser(updatedUser)); // Use the action creator
+    } else {
+      const errorData = await response.json();
+      console.error('Error updating wallet:', errorData);
+    }
+  } catch (error) {
+    console.error('Error in thunkUpdateUser:', error);
+  }
+};
+
+
+
+
+
 export const thunkLogout = () => async (dispatch) => {
   await fetch('/api/auth/logout')
   dispatch(removeUser())
@@ -69,6 +103,8 @@ function sessionReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USER:
       return { ...state, user: action.payload }
+    case UPDATE_USER:
+      return {...state, user: {...state.user,...action.payload } }
     case REMOVE_USER:
       return { ...state, user: null }
     default:

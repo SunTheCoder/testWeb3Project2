@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from web3 import Web3  # Import Web3 for address validation
 
 from app.alchemy_utils import get_balance  # Updated import path
-from app.models import Wallet, db
+from app.models import User, db
 
 # Encryption key for private keys (store this securely)
 ENCRYPTION_KEY = Fernet.generate_key()
@@ -38,51 +38,15 @@ def create_existing_wallet():
 		return {'errors': {'message': 'Wallet address is required'}}, 400
 
 	# Create and save wallet
-	wallet = Wallet(
-		user_id=current_user.id,
+	wallet = User(
+		id=current_user.id,
 		wallet_address=wallet_address,
-		wallet_key='example_wallet_key',  # Replace with secure generation later
+		# wallet_key='example_wallet_key',  
 	)
 	db.session.add(wallet)
 	db.session.commit()
 
 	return wallet.to_dict(), 201
-
-
-# @wallet_routes.route('/create', methods=['POST'])
-# @login_required
-# def create_wallet():
-#     try:
-#         # Check if the user already has a wallet
-#         if current_user.wallet:
-#             return jsonify({"error": "User already has a connected wallet"}), 400
-
-#         # Generate a new wallet
-#         new_wallet = Web3().eth.account.create()
-#         wallet_address = new_wallet.address
-#         private_key = new_wallet.key.hex()
-
-#         # Encrypt the private key before storing
-#         encrypted_private_key = encrypt_private_key(private_key)
-
-#         # Save the wallet to the database
-#         wallet = Wallet(
-#             user_id=current_user.id,
-#             wallet_address=wallet_address,
-#             wallet_key=encrypted_private_key
-#         )
-#         db.session.add(wallet)
-#         db.session.commit()
-
-#         # Return the wallet details to the user
-#         return jsonify({
-#             "walletAddress": wallet_address,
-#             "privateKey": private_key  # Display only once for the user to save
-#         }), 201
-
-#     except Exception as e:
-#         print(f"Error creating wallet: {e}")  # Log the error
-#         return jsonify({"error": "Internal server error"}), 500
 
 
 @wallet_routes.route('/create', methods=['POST'])
@@ -99,7 +63,7 @@ def create_wallet():
 		private_key = new_wallet.key.hex()
 
 		# Save only the public wallet address
-		wallet = Wallet(user_id=current_user.id, wallet_address=wallet_address)
+		wallet = User(id=current_user.id, wallet_address=wallet_address)
 		db.session.add(wallet)
 		db.session.commit()
 
@@ -149,26 +113,54 @@ def verify_wallet():
 @wallet_routes.route('/connect', methods=['POST'])
 @login_required
 def connect_wallet():
-	try:
-		data = request.get_json()
-		wallet_address = data.get('walletAddress')
+    try:
+        data = request.get_json()
+        wallet_address = data.get('wallet_address')
 
-		if not wallet_address or not Web3.is_address(wallet_address):
-			return jsonify({'error': 'Invalid wallet address'}), 400
+        # Validate the wallet address
+        if not wallet_address or not Web3.isChecksumAddress(wallet_address):
+            return jsonify({'error': 'Invalid wallet address'}), 400
 
-		if current_user.wallet:
-			return jsonify({'error': 'User already has a connected wallet'}), 400
+        # Check if the user already has a wallet
+        if current_user.wallet_address:
+            return jsonify({
+                'message': 'User already has a connected wallet',
+                'current_wallet': current_user.wallet_address,
+                'prompt_update': True
+            }), 200
 
-		# Save only the public wallet address
-		new_wallet = Wallet(user_id=current_user.id, wallet_address=wallet_address, wallet_key=None)
-		db.session.add(new_wallet)
-		db.session.commit()
+        # If no wallet exists, save the new one
+        current_user.wallet_address = wallet_address
+        db.session.commit()
 
-		return jsonify({'message': 'Wallet connected successfully!'}), 201
+        return jsonify({'message': 'Wallet connected successfully!'}), 201
 
-	except Exception as e:
-		print(f'Error in /connect: {e}')
-		return jsonify({'error': 'Internal server error'}), 500
+    except Exception as e:
+        print(f'Error in /connect: {e}')
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@wallet_routes.route('/update', methods=['PUT'])
+@login_required
+def update_wallet():
+    try:
+        data = request.get_json()
+        wallet_address = data.get('wallet_address')
+
+        # Validate the wallet address
+        if not wallet_address or not Web3.isChecksumAddress(wallet_address):
+            return jsonify({'error': 'Invalid wallet address'}), 400
+
+        # Update the user's wallet address
+        current_user.wallet_address = wallet_address
+        db.session.commit()
+
+        return jsonify({'message': 'Wallet address updated successfully!'}), 200
+
+    except Exception as e:
+        print(f'Error in /update: {e}')
+        return jsonify({'error': 'Internal server error'}), 500
+
 
 
 @wallet_routes.route('/balance', methods=['GET'])

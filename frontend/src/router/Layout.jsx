@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ModalProvider, Modal } from '../context/Modal'
 import { thunkAuthenticate } from '../redux/session'
 import Navigation from '../components/Navigation/Navigation'
-import WalletCard from '../components/WalletManager/walletCard'
-import UserWalletBalance from '../components/UserWalletBalance/userWalletBalance'
-import Dashboard from '../components/Dashboard/dashboard'
+import WalletDrawer from '@/components/WalletManager/walletDrawer'
+
+
 
 export default function Layout() {
   const dispatch = useDispatch()
@@ -14,6 +14,7 @@ export default function Layout() {
 
   // Retrieve the current user from Redux
   const user = useSelector((state) => state.session.user)
+  
 
   useEffect(() => {
     dispatch(thunkAuthenticate()).then(() => setIsLoaded(true))
@@ -22,12 +23,11 @@ export default function Layout() {
   return (
     <>
       <ModalProvider>
-        <Navigation />
+        <Navigation user={user}/>
         {isLoaded && (
           <main>
-            <Dashboard />
-            {user && <UserWalletBalance user={user} />}
-            <WalletCard />
+            
+            {/* <WalletDrawer user={user}/> */}
             <Outlet />
           </main>
         )}

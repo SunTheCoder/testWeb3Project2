@@ -33,6 +33,38 @@ def login():
 		return user.to_dict()
 	return form.errors, 401
 
+@auth_routes.route('/update', methods=['PUT'])
+
+def update_user():
+    """
+    Updates the current user's information
+    """
+    try:
+        data = request.get_json()
+
+        # Allowed fields to update
+        allowed_fields = ['username', 'email', 'password', 'wallet_address']
+        updates = {key: value for key, value in data.items() if key in allowed_fields}
+
+        if not updates:
+            return {'errors': {'message': 'No valid fields to update'}}, 400
+
+        # Update fields
+        for key, value in updates.items():
+            if key == 'password':
+                current_user.password = value  # Hashing handled by model setter
+            else:
+                setattr(current_user, key, value)
+
+        # Commit the updates
+        db.session.commit()
+
+        return current_user.to_dict(), 200
+    except Exception as e:
+        print(f"Error updating user: {e}")
+        return {'errors': {'message': 'Internal server error'}}, 500
+
+
 
 @auth_routes.route('/logout')
 def logout():
@@ -57,6 +89,7 @@ def sign_up():
 		login_user(user)
 		return user.to_dict()
 	return form.errors, 401
+
 
 
 @auth_routes.route('/unauthorized')

@@ -3,6 +3,8 @@ import { thunkLogin } from '../../redux/session'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, useNavigate } from 'react-router-dom'
 import './LoginForm.css'
+import { Heading, Input } from '@chakra-ui/react'
+import { Button } from '@/components/ui/button'
 
 function LoginFormPage() {
   const navigate = useNavigate()
@@ -33,13 +35,13 @@ function LoginFormPage() {
 
   return (
     <>
-      <h1>Log In</h1>
+      <Heading size="lg">Log In</Heading>
       {errors.length > 0 &&
         errors.map((message) => <p key={message}>{message}</p>)}
       <form onSubmit={handleSubmit}>
         <label>
           Email
-          <input
+          <Input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -49,7 +51,7 @@ function LoginFormPage() {
         {errors.email && <p>{errors.email}</p>}
         <label>
           Password
-          <input
+          <Input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -57,7 +59,7 @@ function LoginFormPage() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
+        <Button type="submit">Log In</Button>
       </form>
     </>
   )

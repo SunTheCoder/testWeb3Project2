@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider as ReduxProvider } from 'react-redux'
+import { Provider as ChakraProvider } from "@/components/ui/provider"
 import { RouterProvider } from 'react-router-dom'
 import { MetaMaskProvider } from '@metamask/sdk-react'
 import configureStore from './redux/store'
@@ -27,7 +28,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       }}
     >
       <ReduxProvider store={store}>
+        <ChakraProvider>
+        
         <RouterProvider router={router} />
+        </ChakraProvider>
       </ReduxProvider>
     </MetaMaskProvider>
   </React.StrictMode>,

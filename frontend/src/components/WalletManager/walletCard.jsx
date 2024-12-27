@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { Button } from "@/components/ui/button"
 import { ethers } from 'ethers';
 import { useSelector, useDispatch } from 'react-redux';
 import { thunkUpdateUser } from '../../redux/session'; // Assuming the thunk is exported from the session file
+import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import CreateWallet from './createWallet';
 
 const WalletCard = () => {
   const [defaultAccount, setDefaultAccount] = useState(null);
@@ -79,23 +82,32 @@ const WalletCard = () => {
   };
 
   return (
-    <div>
-      <h4>Wallet Manager</h4>
-      <button onClick={connectWalletHandler}>Connect Wallet</button>
+    <Box bg="teal.700"
 
+
+    w="fit-content" border="2px solid" borderColor="black" ml="20px" p="15px" borderRadius="sm">
+      <VStack>
+      <Heading color="white" size="lg">Wallet Manager</Heading>
+      <HStack>
+      <Button size="xs" onClick={connectWalletHandler}>Connect Wallet</Button>
+      <CreateWallet/>
+      </HStack>
       {promptUpdate && (
-        <div>
-          <p>You already have a wallet connected: {currentWallet}</p>
-          <p>Do you want to overwrite it?</p>
-          <button onClick={updateWalletHandler}>Yes, overwrite</button>
-          <button onClick={() => setPromptUpdate(false)}>No, cancel</button>
-        </div>
+        <Box>
+          <Text color="white">You already have a wallet connected: {currentWallet}</Text>
+          <Text color="white">Do you want to overwrite it?</Text>
+          <Button size="xs" onClick={updateWalletHandler}>Yes, overwrite</Button>
+          <Button size="xs" onClick={() => setPromptUpdate(false)}>No, cancel</Button>
+        </Box>
       )}
 
-      <div>Address: {defaultAccount || 'Not connected'}</div>
-      <div>Balance: {userBalance !== null ? `${userBalance} ETH` : 'N/A'}</div>
+      <Text color="white" fontWeight="bold">Address:</Text>
+      <Text color="white" fontSize="sm">{defaultAccount || 'Not connected'}</Text>
+      <Text color="white" fontWeight="bold">Balance:</Text>
+      <Text color="white" fontSize="sm">{userBalance !== null ? `${userBalance} ETH` : 'N/A'}</Text>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-    </div>
+      </VStack>
+    </Box>
   );
 };
 

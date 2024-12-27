@@ -4,9 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ModalProvider, Modal } from '../context/Modal'
 import { thunkAuthenticate } from '../redux/session'
 import Navigation from '../components/Navigation/Navigation'
-import WalletCard from '../components/WalletManager/walletCard'
-import UserWalletBalance from '../components/UserWalletBalance/userWalletBalance'
-import Dashboard from '../components/Dashboard/dashboard'
 import WalletDrawer from '@/components/WalletManager/walletDrawer'
 
 
@@ -29,10 +26,6 @@ export default function Layout() {
         <Navigation />
         {isLoaded && (
           <main>
-            
-            <Dashboard user={user}/>
-            {user && <UserWalletBalance user={user} />}
-            {/* <WalletCard /> */}
             
             <WalletDrawer user={user}/>
             <Outlet />

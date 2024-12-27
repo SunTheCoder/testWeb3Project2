@@ -216,7 +216,7 @@ const WalletDrawer = ({user}) => {
           <DrawerTitle> {formattedUsername}'s Wallet Manager </DrawerTitle>
           <Collapsible.Root>
         <Tooltip content={"Info on Ethereum and Layer 2 Blockchain Solutions"}>
-    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "pink.300"}}> <LuInfo /></Collapsible.Trigger>
+    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "teal.200"}}> <LuInfo /></Collapsible.Trigger>
     </Tooltip>
     <Collapsible.Content>
     <AccordionRoot collapsible>

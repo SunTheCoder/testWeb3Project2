@@ -5,8 +5,7 @@ const buttonRecipe = defineConfig({
     main: {
       true: {
         size:"xs",
-        border:"1px solid",
-        borderColor:"teal.500",
+        
         borderRadius:"sm",
         shadow:"md",
         bg:"radial-gradient(circle,rgb(135, 16, 131),rgb(161, 77, 166))",
@@ -14,8 +13,8 @@ const buttonRecipe = defineConfig({
         
           
           _dark: {
-            bg: 'radial-gradient(circle,rgb(106, 8, 103),rgb(118, 31, 122))', // Dark mode hover background
-            // color: "pink.200", // Dark mode hover text color
+            bg: 'radial-gradient(circle,rgb(160, 15, 155),rgb(118, 31, 122))', // Dark mode hover background
+            color: "white", // Dark mode hover text color
           },
         },
       },

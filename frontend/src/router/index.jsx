@@ -1,8 +1,8 @@
-import { createBrowserRouter } from 'react-router-dom';
-import LoginFormPage from '../components/LoginFormPage';
-import SignupFormPage from '../components/SignupFormPage';
-import Layout from './Layout';
-import UploadsPage from '../components/UploadsPage/UploadsPage';
+import { createBrowserRouter } from 'react-router-dom'
+import LoginFormPage from '../components/LoginFormPage'
+import SignupFormPage from '../components/SignupFormPage'
+import Layout from './Layout'
+import UploadsPage from '../components/UploadsPage/UploadsPage'
 
 export const router = createBrowserRouter([
   {
@@ -21,9 +21,9 @@ export const router = createBrowserRouter([
         element: <SignupFormPage />,
       },
       {
-        path: "uploads",
-        element: <UploadsPage />
-      }
+        path: 'uploads',
+        element: <UploadsPage />,
+      },
     ],
   },
-]);
+])

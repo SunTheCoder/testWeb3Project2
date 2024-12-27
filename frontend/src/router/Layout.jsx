@@ -29,8 +29,8 @@ export default function Layout() {
           <main>
             <Dashboard user={user}/>
             {user && <UserWalletBalance user={user} />}
-            <WalletCard />
-            <WalletDrawer/>
+            {/* <WalletCard /> */}
+            <WalletDrawer user={user}/>
             <Outlet />
           </main>
         )}

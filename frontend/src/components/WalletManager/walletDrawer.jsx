@@ -15,6 +15,12 @@ import {
     SkeletonCircle,
     SkeletonText,
   } from "@/components/ui/skeleton"
+  import {
+    ClipboardRoot, 
+    ClipboardButton,
+    ClipboardIconButton,
+    ClipboardInput,
+  } from "@/components/ui/clipboard"
 
 import {
   DrawerBackdrop,
@@ -26,18 +32,21 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import { CiWallet } from "react-icons/ci";
+
 import CreateWallet from './createWallet';
 import GasPrice from './gasPrice';
 
-const WalletDrawer = () => {
+const WalletDrawer = ({user}) => {
   const [defaultAccount, setDefaultAccount] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [currentWallet, setCurrentWallet] = useState(null);
   const [loading, setLoading] = useState(true);
   
-
-  const user = useSelector((state) => state.session?.user);
+  
+  
+  const formattedUsername = user?.username.slice(0,1).toUpperCase() + user?.username.slice(1).toLowerCase()
   const dispatch = useDispatch();
 
   // Connect to MetaMask
@@ -81,8 +90,12 @@ const WalletDrawer = () => {
     }
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
-    <DrawerRoot placement="start" size="md" >
+    <DrawerRoot placement="start" size="sm" >
       <DrawerBackdrop />
       <DrawerTrigger asChild>
         <Button
@@ -96,12 +109,14 @@ const WalletDrawer = () => {
           borderRadius="sm"
           size="sm"
         >
-          Open Wallet Manager
+            
+         <CiWallet/>
+        Wallet Manager
         </Button>
       </DrawerTrigger>
-      <DrawerContent borderRightRadius="lg" h="50%" mt="20px">
+      <DrawerContent borderRightRadius="lg" h="50%" mt="50px">
         <DrawerHeader>
-          <DrawerTitle>Wallet Manager</DrawerTitle>
+          <DrawerTitle> {formattedUsername}'s Wallet Manager </DrawerTitle>
         </DrawerHeader>
         <DrawerBody>
           <VStack spacing={4} align="start">
@@ -128,11 +143,17 @@ const WalletDrawer = () => {
                 <Text>Do you want to overwrite it?</Text>
               </Box>
             )}
-
+                
             <Box>
               <Text fontWeight="bold">Address:</Text>
               <Skeleton loading={loading}>
+              <ClipboardRoot value={defaultAccount}>
+        <HStack>
+            
                 <Text fontSize="xs">{defaultAccount || 'Not connected'}</Text>
+            <ClipboardIconButton size="xs" variant="ghost"/>
+        </HStack>
+      </ClipboardRoot>
               </Skeleton>
             </Box>
 

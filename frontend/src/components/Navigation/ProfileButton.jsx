@@ -19,11 +19,18 @@ function ProfileButton() {
   return (
     <MenuRoot>
       <MenuTrigger asChild>
-        <Button variant="ghost" p={1} size="sm" borderRadius="4xl">
+        <Button variant="ghost" m={1}
+        p={1} size="sm" borderRadius="4xl">
         <FaUserCircle />
         </Button>
       </MenuTrigger>
-      <MenuContent>
+      <MenuContent
+         style={{
+          listStyle: 'none', // Ensure no bullets appear
+          padding: 0, // Remove default padding
+          margin: 0, // Remove default margin
+        }}
+      >
         {user ? (
           <>
             <MenuItem value="username" isDisabled>

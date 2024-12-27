@@ -205,7 +205,8 @@ const WalletDrawer = ({user}) => {
         <Button
           main
           size="xs"
-         
+          color="gold"
+          _dark={{ color: "gold" }}
           ml={5}
         >
             

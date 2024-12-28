@@ -93,11 +93,14 @@ function SignupFormModal() {
             >
               <InputGroup flex="1" startElement={<MdOutlineEmail />}>
                 <Input
+                  variant="subtle"
+
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
                   isInvalid={Boolean(errors.email)}
+                  w="224px"
                 />
               </InputGroup>
             </Field>
@@ -111,6 +114,8 @@ function SignupFormModal() {
             >
               <InputGroup flex="1" startElement={<LuUser />}>
                 <Input
+                  variant="subtle"
+                  w="224px"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -149,6 +154,7 @@ function SignupFormModal() {
             >
               <InputGroup flex="1" startElement={<TbLockPassword />}>
                 <PasswordInput
+                  variant="subtle"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}

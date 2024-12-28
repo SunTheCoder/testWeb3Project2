@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     nonce = db.Column(db.String(100), nullable=True, unique=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
-	uploads = db.relationship('Uploads', back_populates='user', lazy=True)  # One-to-many
+    uploads = db.relationship('Upload', back_populates='user', lazy=True)  # One-to-many
 
     @property
     def password(self):

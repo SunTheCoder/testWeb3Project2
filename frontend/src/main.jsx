@@ -8,6 +8,7 @@ import configureStore from './redux/store'
 import { router } from './router'
 import * as sessionActions from './redux/session'
 import './index.css'
+import { Toaster } from './components/ui/toaster'
 
 const store = configureStore()
 
@@ -29,7 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     >
       <ReduxProvider store={store}>
         <ChakraProvider>
-        
+        <Toaster/>
         <RouterProvider router={router} />
         </ChakraProvider>
       </ReduxProvider>

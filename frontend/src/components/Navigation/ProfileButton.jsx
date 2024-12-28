@@ -39,7 +39,7 @@ function ProfileButton() {
             <MenuItem value="email" isDisabled>
               {user.email}
             </MenuItem>
-            <MenuItem value="logout" onSelect={logout}>
+            <MenuItem value="logout" onClick={logout}>
               Log Out
             </MenuItem>
           </>

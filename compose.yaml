@@ -21,6 +21,7 @@ services:
       - ./frontend/.env.local
     volumes:
       - ./frontend:/var/www/
+      - /var/www/node_modules/ # Exclude node_modules from being overwritten
     container_name: frontend
     ports:
       - 5173:5173

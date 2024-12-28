@@ -8,7 +8,6 @@ import { toaster } from '@/components/ui/toaster';
 
 import {
   PasswordInput,
-  PasswordStrengthMeter,
 } from '@/components/ui/password-input';
 
 function LoginFormModal() {
@@ -71,16 +70,7 @@ function LoginFormModal() {
     }
   };
 
-  const calculatePasswordStrength = (password) => {
-    if (!password) return 0;
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[^A-Za-z0-9]/.test(password)) strength++;
-    return strength; // A number between 0 and 4
-  };
-
+ 
   return (
     <Box p={4} bg="white" rounded="md" shadow="md" maxW="400px" mx="auto">
       <Heading size="lg" mb={4}>
@@ -122,11 +112,10 @@ function LoginFormModal() {
                   isInvalid={Boolean(errors.password)}
                 />
               </Field>
-              <PasswordStrengthMeter value={calculatePasswordStrength(password)} />
             </Stack>
           </Box>
           <VStack>
-            <Button main type="submit" w="fit" size="xs">
+            <Button main mt="10px" type="submit" w="fit" size="xs">
               Log In
             </Button>
           </VStack>

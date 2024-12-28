@@ -23,8 +23,10 @@ export default function Layout() {
 
   return (
     <Box
-                        bg= "radial-gradient(circle, rgba(212, 192, 139, 0.8), rgba(142, 68, 173, 0.8))" h= "100vh" p="1px"
-                         >
+        bg= "radial-gradient(circle, rgba(212, 192, 139, 0.8), rgba(142, 68, 173, 0.8))" 
+        h= "100vh" 
+        p="1px"
+        >
       <ModalProvider>
         <Navigation user={user}/>
         {isLoaded && (

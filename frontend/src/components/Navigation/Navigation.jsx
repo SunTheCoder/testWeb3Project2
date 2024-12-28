@@ -27,7 +27,7 @@ function Navigation({user}) {
           borderRadius="4xl"
           position="absolute"
           right="15px"
-          top="0px"
+          top="15px"
           />
       </li>
     </HStack>

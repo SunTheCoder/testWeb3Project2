@@ -5,6 +5,7 @@ import { ModalProvider, Modal } from '../context/Modal'
 import { thunkAuthenticate } from '../redux/session'
 import Navigation from '../components/Navigation/Navigation'
 import WalletDrawer from '@/components/WalletManager/walletDrawer'
+import { Box } from '@chakra-ui/react'
 
 
 
@@ -21,7 +22,11 @@ export default function Layout() {
   }, [dispatch])
 
   return (
-    <>
+    <Box
+        bg= "radial-gradient(circle, rgba(212, 192, 139, 0.8), rgba(142, 68, 173, 0.8))" 
+        h= "100vh" 
+        p="1px"
+        >
       <ModalProvider>
         <Navigation user={user}/>
         {isLoaded && (
@@ -33,6 +38,6 @@ export default function Layout() {
         )}
         <Modal />
       </ModalProvider>
-    </>
+    </Box>
   )
 }

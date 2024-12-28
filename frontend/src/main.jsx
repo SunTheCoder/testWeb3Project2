@@ -10,6 +10,7 @@ import * as sessionActions from './redux/session'
 import './index.css'
 import { Toaster } from './components/ui/toaster'
 
+
 const store = configureStore()
 
 if (import.meta.env.MODE !== 'production') {
@@ -31,7 +32,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ReduxProvider store={store}>
         <ChakraProvider>
         <Toaster/>
+        
         <RouterProvider router={router} />
+        
         </ChakraProvider>
       </ReduxProvider>
     </MetaMaskProvider>

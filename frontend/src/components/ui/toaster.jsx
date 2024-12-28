@@ -33,6 +33,8 @@ import {
 export const toaster = createToaster({
   placement: 'bottom-center',
   pauseOnPageIdle: true,
+  max: 3,
+  overlap: true,
 })
 
 export const Toaster = () => {

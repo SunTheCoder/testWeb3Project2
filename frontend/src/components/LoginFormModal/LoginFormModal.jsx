@@ -3,12 +3,18 @@ import { thunkLogin } from '../../redux/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import { Heading, Input, Button, Box, Stack, Text, VStack } from '@chakra-ui/react';
+import { InputGroup } from "@/components/ui/input-group"
 import { Field } from '@/components/ui/field';
 import { toaster } from '@/components/ui/toaster';
-
 import {
   PasswordInput,
 } from '@/components/ui/password-input';
+import { LuUser } from "react-icons/lu"
+import { MdOutlineEmail } from "react-icons/md";
+import { TbLockPassword } from "react-icons/tb";
+
+
+
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -73,26 +79,31 @@ function LoginFormModal() {
  
   return (
     <Box p={4} bg="white" rounded="md" shadow="md" maxW="400px" mx="auto">
-      <Heading size="lg" mb={4}>
-        Log In
-      </Heading>
+      
       <form onSubmit={handleSubmit}>
         <Stack spacing={4}>
           <Box>
             <Field
               invalid={Boolean(errors.email)}
+              outlineColor="gold"
               label="Email"
               errorText={errors.email || 'This field is required'}
               required
             >
+            <InputGroup flex="1" startElement={<MdOutlineEmail />}>
+
               <Input
                 variant="subtle"
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder="Email"
                 isInvalid={Boolean(errors.email)}
+                w="224px"
               />
+
+            </InputGroup>
+
             </Field>
           </Box>
           <Box maxW="300px">
@@ -103,14 +114,16 @@ function LoginFormModal() {
                 errorText={errors.password || 'This field is required'}
                 required
               >
+              <InputGroup flex="1" startElement={<TbLockPassword />}>
                 <PasswordInput
                   variant="subtle"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="Password"
                   isInvalid={Boolean(errors.password)}
                 />
+              </InputGroup>
               </Field>
             </Stack>
           </Box>

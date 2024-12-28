@@ -81,7 +81,15 @@ function SignupFormModal() {
 
 
   return (
-    <Box p={4} bg="white" rounded="md" shadow="md" maxW="400px" mx="auto">
+    <Box 
+      p={4} 
+      bg="white" 
+      rounded="md" 
+      shadow="md" 
+      maxW="400px" 
+      mx="auto" 
+      _dark={{bg:"rgb(71, 39, 72)"}}
+      >
       <form onSubmit={handleSubmit}>
         <Stack spacing={4}>
           <Box>

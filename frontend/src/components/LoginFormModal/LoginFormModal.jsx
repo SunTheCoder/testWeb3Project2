@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { thunkLogin } from '../../redux/session'
 import { useDispatch } from 'react-redux'
 import { useModal } from '../../context/Modal'
-import './LoginForm.css'
+import { Heading, Input, Button, Box, Stack, Text } from '@chakra-ui/react'
 
 function LoginFormModal() {
   const dispatch = useDispatch()
@@ -29,32 +29,52 @@ function LoginFormModal() {
   }
 
   return (
-    <>
-      <h1>Log In</h1>
+    <Box p={4} bg="white" rounded="md" shadow="md" maxW="400px" mx="auto" >
+      <Heading size="lg" mb={4}>
+        Log In
+      </Heading>
       <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <button type="submit">Log In</button>
+        <Stack spacing={4}>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={1}>
+              Email
+            </Text>
+            <Input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Enter your email"
+            />
+            {errors.email && (
+              <Text color="red.500" fontSize="sm" mt={1}>
+                {errors.email}
+              </Text>
+            )}
+          </Box>
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb={1}>
+              Password
+            </Text>
+            <Input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Enter your password"
+            />
+            {errors.password && (
+              <Text color="red.500" fontSize="sm" mt={1}>
+                {errors.password}
+              </Text>
+            )}
+          </Box>
+          <Button main type="submit" colorScheme="blue" w="full">
+            Log In
+          </Button>
+        </Stack>
       </form>
-    </>
+    </Box>
   )
 }
 

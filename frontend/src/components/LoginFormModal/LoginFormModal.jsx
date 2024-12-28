@@ -80,11 +80,12 @@ function LoginFormModal() {
   return (
     <Box 
       p={4} 
-      bg="white" 
+      bg="rgb(220, 151, 222)" 
       rounded="md" 
       shadow="md" 
       maxW="400px" 
       mx="auto" 
+      color=""
       _dark={{bg:"rgb(71, 39, 72)"}}
     >
       

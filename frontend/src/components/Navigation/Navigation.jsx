@@ -5,6 +5,7 @@ import { Button, HStack } from '@chakra-ui/react'
 import { ColorModeButton } from "@/components/ui/color-mode"
 import WalletDrawer from '../WalletManager/walletDrawer'
 import { TiHomeOutline } from "react-icons/ti";
+import NavigateToUploadsButton from '../UploadsPage/NavigateToUploads'
 
 
 function Navigation({user}) {
@@ -24,6 +25,10 @@ function Navigation({user}) {
 
       <li>
         <WalletDrawer user={user}/>
+      </li>
+
+      <li>
+        <NavigateToUploadsButton/>
       </li>
 
       <li>

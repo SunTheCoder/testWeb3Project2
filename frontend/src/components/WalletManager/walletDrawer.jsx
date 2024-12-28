@@ -209,6 +209,7 @@ const WalletDrawer = ({user}) => {
           fontWeight="bold"
           size="xs"
           color="gold"
+          
           _dark={{ color: "gold" }}
           ml={5}
         >
@@ -217,7 +218,15 @@ const WalletDrawer = ({user}) => {
         Wallet Manager
         </Button>
       </DrawerTrigger>
-      <DrawerContent borderRightRadius="lg" h="fit-content" mt="60px">
+      <DrawerContent 
+        borderRightRadius="lg" 
+        h="fit-content" 
+        mt="60px"
+        bg="rgb(220, 151, 222)" 
+        border="2px solid"
+        borderColor="gold"
+        borderLeft="none"
+        >
         <DrawerHeader>
           <DrawerTitle> {formattedUsername}'s Wallet Manager </DrawerTitle>
           <Collapsible.Root>

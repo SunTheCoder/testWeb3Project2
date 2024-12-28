@@ -1,7 +1,7 @@
 """add-uploads-and-ifps-cache
 
 Revision ID: a670eff8b798
-Revises: b3d98ae46bce
+Revises: 3c5ea24d914a
 Create Date: 2024-12-23 14:14:40.299423
 
 """
@@ -11,7 +11,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = 'a670eff8b798'
-down_revision = 'b3d98ae46bce'
+down_revision = '3c5ea24d914a'
 branch_labels = None
 depends_on = None
 

@@ -128,7 +128,7 @@ function LoginFormModal() {
             </Stack>
           </Box>
           <VStack>
-            <Button main mt="10px" type="submit" w="fit" size="xs">
+            <Button main color="gold" fontWeight="bold" mt="10px" type="submit" w="fit" size="xs">
               Log In
             </Button>
           </VStack>

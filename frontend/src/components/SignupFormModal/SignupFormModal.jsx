@@ -83,7 +83,8 @@ function SignupFormModal() {
   return (
     <Box 
       p={4} 
-      bg="white" 
+      bg="rgb(220, 151, 222)" 
+ 
       rounded="md" 
       shadow="md" 
       maxW="400px" 

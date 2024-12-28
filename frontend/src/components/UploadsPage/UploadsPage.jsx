@@ -4,6 +4,12 @@ import { useSelector } from 'react-redux'
 import ViewUploads from './ViewUploads'
 import UploadQueue from './UploadQueue'
 import FileUploader from './FileUploader'
+import { Box, Input } from '@chakra-ui/react'
+import { Field } from "@/components/ui/field"
+import { Button } from "@/components/ui/button"
+
+
+
 
 const UploadsPage = () => {
   const user = useSelector((state) => state.session.user)
@@ -12,6 +18,7 @@ const UploadsPage = () => {
   const [selectedFiles, setSelectedFiles] = useState([])
   const [metadataKVPairs, setMetadataKVPairs] = useState([])
   const [allFiles, setAllFiles] = useState([])
+  const [uploading, setLoading] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -97,6 +104,7 @@ const UploadsPage = () => {
             ...metadata,
           },
         })
+        setLoading(true)
       } else {
         upload = await pinata.upload.file(selectedFiles[0]).addMetadata({
           name,
@@ -104,6 +112,7 @@ const UploadsPage = () => {
             ...metadata,
           },
         })
+        setLoading(true)
       }
 
       if (upload.IpfsHash) {
@@ -135,6 +144,7 @@ const UploadsPage = () => {
         deleteAllKVPairs()
         setSelectedFiles([])
         setAllFiles([...allFiles, data])
+        setLoading(false)
       }
     } catch (error) {
       alert('Uh Oh! Something went wrong')
@@ -143,25 +153,31 @@ const UploadsPage = () => {
   }
 
   return (
-    <div>
+    <Box>
       <h1>Uploads</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name this Upload</label>
-          <input
-            type="text"
-            maxLength={50}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+        <Box>
+          <Field
+            label="Name this Upload"
+            width="200px"
+            
+          >
+            <Input
+              size="xs"
+              type="text"
+              maxLength={50}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Field>
+        </Box>
 
         {/* Dynamically add Metadata as KV Pairs */}
-        <div>
+        <Box>
           <h2>Additional Data</h2>
           {metadataKVPairs.map((pair, index) => (
-            <div key={index}>
-              <input
+            <Box key={index}>
+              <Input
                 type="text"
                 placeholder="Key"
                 value={pair.key}
@@ -170,7 +186,8 @@ const UploadsPage = () => {
                 }
               />
 
-              <input
+              <Input
+                
                 type="text"
                 placeholder="Value"
                 value={pair.value}
@@ -178,21 +195,21 @@ const UploadsPage = () => {
                   handleKeyValuePairChange(index, 'value', e.target.value)
                 }
               />
-              <button onClick={() => deleteKeyValuePair(index)}>Delete</button>
-            </div>
+              <Button main onClick={() => deleteKeyValuePair(index)}>Delete</Button>
+            </Box>
           ))}
 
-          <button onClick={addKeyValuePair} type="button">
+          <Button main size="xs"  onClick={addKeyValuePair} type="button">
             Add Key-Value Pair
-          </button>
-          <button onClick={deleteAllKVPairs} type="button">
+          </Button>
+          <Button main size="xs"  onClick={deleteAllKVPairs} type="button">
             Delete All Key-Values
-          </button>
-        </div>
+          </Button>
+        </Box>
 
         {/* Upload zone */}
         <FileUploader handleFiles={handleFiles} />
-        <button type="submit">Submit</button>
+        <Button loading={uploading} loadingText="Uploading..." main size="xs" type="submit">Submit</Button>
 
         {selectedFiles.length > 0 && (
           <UploadQueue selectedFiles={selectedFiles} deleteFile={deleteFile} />
@@ -200,7 +217,7 @@ const UploadsPage = () => {
       </form>
 
       <ViewUploads allFiles={allFiles} />
-    </div>
+    </Box>
   )
 }
 export default UploadsPage

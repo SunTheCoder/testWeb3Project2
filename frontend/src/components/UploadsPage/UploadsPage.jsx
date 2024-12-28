@@ -4,8 +4,10 @@ import { useSelector } from 'react-redux'
 import ViewUploads from './ViewUploads'
 import UploadQueue from './UploadQueue'
 import FileUploader from './FileUploader'
-import { Box, Button, Input } from '@chakra-ui/react'
+import { Box, Input } from '@chakra-ui/react'
 import { Field } from "@/components/ui/field"
+import { Button } from "@/components/ui/button"
+
 
 
 
@@ -16,6 +18,7 @@ const UploadsPage = () => {
   const [selectedFiles, setSelectedFiles] = useState([])
   const [metadataKVPairs, setMetadataKVPairs] = useState([])
   const [allFiles, setAllFiles] = useState([])
+  const [uploading, setLoading] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -101,6 +104,7 @@ const UploadsPage = () => {
             ...metadata,
           },
         })
+        setLoading(true)
       } else {
         upload = await pinata.upload.file(selectedFiles[0]).addMetadata({
           name,
@@ -108,6 +112,7 @@ const UploadsPage = () => {
             ...metadata,
           },
         })
+        setLoading(true)
       }
 
       if (upload.IpfsHash) {
@@ -139,6 +144,7 @@ const UploadsPage = () => {
         deleteAllKVPairs()
         setSelectedFiles([])
         setAllFiles([...allFiles, data])
+        setLoading(false)
       }
     } catch (error) {
       alert('Uh Oh! Something went wrong')
@@ -203,7 +209,7 @@ const UploadsPage = () => {
 
         {/* Upload zone */}
         <FileUploader handleFiles={handleFiles} />
-        <Button main size="xs" type="submit">Submit</Button>
+        <Button loading={uploading} loadingText="Uploading..." main size="xs" type="submit">Submit</Button>
 
         {selectedFiles.length > 0 && (
           <UploadQueue selectedFiles={selectedFiles} deleteFile={deleteFile} />

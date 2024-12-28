@@ -30,10 +30,16 @@ function ProfileButton() {
           padding: 0, // Remove default padding
           margin: 0, // Remove default margin
         }}
+      bg="rgb(220, 151, 222)" 
+      _dark={{bg:"rgb(71, 39, 72)"}}
+
+      
       >
         {user ? (
           <>
-            <MenuItem value="username" isDisabled>
+            <MenuItem 
+            
+            value="username" isDisabled>
               Hi, {user.username}! 👋🏾
             </MenuItem>
             <MenuItem value="email" isDisabled>
@@ -45,7 +51,8 @@ function ProfileButton() {
           </>
         ) : (
           <>
-            <MenuItem value="login">
+            <MenuItem 
+            value="login">
               <OpenModalMenuItem
                 itemText="Log In"
                 modalComponent={<LoginFormModal />}

@@ -40,13 +40,14 @@ const buttonRecipe = defineConfig({
           },
           
     },
+    // cancel, delete, logout
     logout: {
         true: {
             borderRadius: "sm",
             maxWidth: "200px",
             boxShadow: "sm",
             fontSize: "xs",
-            bg: "radial-gradient(circle, #FFD1D1, #FFC4C4)", // Light red gradient
+            bg: "radial-gradient(circle, #FFD1D1,rgb(254, 168, 168))", // Light red gradient
             color: "red.800", // Default text color
             _dark: {
               bg: "radial-gradient(circle, #8B0000, #2C1C1C)", // Dark red gradient

@@ -1,126 +1,112 @@
 import { pinata } from '../../utils/config'
-import { useCallback, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import ViewUploads from './ViewUploads'
-import UploadQueue from './UploadQueue'
-import FileUploader from './FileUploader'
-import { Box, Input } from '@chakra-ui/react'
-import { Field } from "@/components/ui/field"
-import { Button } from "@/components/ui/button"
-
-
-
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import ViewUploads from './ViewUploads';
+import UploadQueue from './UploadQueue';
+import FileUploader from './FileUploader';
+import { 
+  Box, 
+  Heading, 
+  VStack, 
+  Separator,
+  Input,
+  Text,
+  Flex,
+  HStack
+} from '@chakra-ui/react';
+import { Field } from '@/components/ui/field';
+import { Button } from '@/components/ui/button';
 
 const UploadsPage = () => {
-  const user = useSelector((state) => state.session.user)
-  const [name, setName] = useState('')
-  const [metadata, setMetadata] = useState({})
-  const [selectedFiles, setSelectedFiles] = useState([])
-  const [metadataKVPairs, setMetadataKVPairs] = useState([])
-  const [allFiles, setAllFiles] = useState([])
-  const [uploading, setLoading] = useState(false)
+  const user = useSelector((state) => state.session.user);
+  const [name, setName] = useState('');
+  const [metadata, setMetadata] = useState({});
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [metadataKVPairs, setMetadataKVPairs] = useState([]);
+  const [allFiles, setAllFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (user) {
       const getFiles = async () => {
         try {
-          const res = await fetch(`/api/uploads/${user.id}`)
-          const data = await res.json()
-          console.log(data)
-          setAllFiles(data)
+          const res = await fetch(`/api/uploads/${user.id}`);
+          const data = await res.json();
+          setAllFiles(data);
         } catch (error) {
-          alert('Uh Oh! Something went wrong with getting your files!')
-          console.log(error)
-          setAllFiles([])
+          console.error('Error fetching files:', error);
         }
-      }
-      getFiles()
+      };
+      getFiles();
     }
-  }, [])
+  }, [user]);
 
-  // Function to handle adding files to the selectedFiles state
-  // Will use useCallback to memoize the function
   const handleFiles = useCallback((acceptedFiles) => {
-    // const files = Array.from(e.target.files)
-    setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles])
-  }, [])
+    setSelectedFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
+  }, []);
 
-  // Function to delete file
   const deleteFile = (index) => {
-    const newSelectedFiles = selectedFiles.filter((_, i) => i !== index)
-    setSelectedFiles(newSelectedFiles)
-  }
+    const newSelectedFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(newSelectedFiles);
+  };
 
-  // Function to update any metadata key-value pair input field
   const handleKeyValuePairChange = (index, key, value) => {
-    const newKVPairs = [...metadataKVPairs]
-    newKVPairs[index][key] = value
-    setMetadataKVPairs(newKVPairs)
+    const newKVPairs = [...metadataKVPairs];
+    newKVPairs[index][key] = value;
+    setMetadataKVPairs(newKVPairs);
 
-    // Update metadata based on the entire keyValuePairs array
     const newMetadata = metadataKVPairs.reduce((acc, pair) => {
-      if (pair.key) acc[pair.key] = pair.value
-      return acc
-    }, {})
-    setMetadata(newMetadata)
-  }
+      if (pair.key) acc[pair.key] = pair.value;
+      return acc;
+    }, {});
+    setMetadata(newMetadata);
+  };
 
-  // Add new key-value pair to metadataKVPairs
   const addKeyValuePair = () => {
-    setMetadataKVPairs([...metadataKVPairs, { key: '', value: '' }])
-  }
+    setMetadataKVPairs([...metadataKVPairs, { key: '', value: '' }]);
+  };
 
-  // Remove KV pair
   const deleteKeyValuePair = (index) => {
-    const newMetadataKVPairs = metadataKVPairs.filter((pair, i) => i !== index)
-    setMetadataKVPairs(newMetadataKVPairs)
+    const newMetadataKVPairs = metadataKVPairs.filter((_, i) => i !== index);
+    setMetadataKVPairs(newMetadataKVPairs);
 
     const newMetadata = newMetadataKVPairs.reduce((acc, pair) => {
-      if (pair.key) acc[pair.key] = pair.value
-      return acc
-    }, {})
-
-    setMetadata(newMetadata)
-  }
+      if (pair.key) acc[pair.key] = pair.value;
+      return acc;
+    }, {});
+    setMetadata(newMetadata);
+  };
 
   const deleteAllKVPairs = () => {
-    setMetadataKVPairs([])
-    setMetadata({})
-  }
+    setMetadataKVPairs([]);
+    setMetadata({});
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!name || selectedFiles.length === 0) return
+    if (!name || selectedFiles.length === 0) return;
 
     try {
-      let upload
+      setUploading(true);
+      let upload;
 
-      // upload based on number of files
       if (selectedFiles.length > 1) {
         upload = await pinata.upload.fileArray(selectedFiles).addMetadata({
           name,
-          keyValues: {
-            ...metadata,
-          },
-        })
-        setLoading(true)
+          keyValues: { ...metadata },
+        });
       } else {
         upload = await pinata.upload.file(selectedFiles[0]).addMetadata({
           name,
-          keyValues: {
-            ...metadata,
-          },
-        })
-        setLoading(true)
+          keyValues: { ...metadata },
+        });
       }
 
       if (upload.IpfsHash) {
         const res = await fetch('/api/uploads/', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name,
             userId: user.id,
@@ -129,54 +115,59 @@ const UploadsPage = () => {
             Timestamp: upload.Timestamp,
             Metadata: metadata || null,
           }),
-        })
+        });
 
-        if (!res.ok) {
-          const error = await res.text()
-          throw new Error(error)
+        if (res.ok) {
+          const data = await res.json();
+          setAllFiles((prevFiles) => [...prevFiles, data.uploads]); // Add new upload to the list
+          alert('Upload successful');
+        } else {
+          console.error('Error uploading file:', await res.text());
         }
-
-        const data = await res.json()
-
-        alert('Upload successful')
-        setName('')
-        setMetadata({})
-        deleteAllKVPairs()
-        setSelectedFiles([])
-        setAllFiles([...allFiles, data])
-        setLoading(false)
       }
+
+      setName('');
+      setMetadata({});
+      deleteAllKVPairs();
+      setSelectedFiles([]);
     } catch (error) {
-      alert('Uh Oh! Something went wrong')
-      console.error(error)
+      console.error('Error during upload:', error);
+    } finally {
+      setUploading(false);
     }
-  }
+  };
 
   return (
-    <Box>
-      <h1>Uploads</h1>
+    <VStack 
+      gap={10}        
+      maxH="90vh" 
+      p="50px"
+      overflowY="auto"
+>
+    {/* <Heading size="lg" mb={6} textAlign="center">
+      Uploads Manager
+    </Heading> */}
       <form onSubmit={handleSubmit}>
-        <Box>
-          <Field
-            label="Name this Upload"
-            width="200px"
-            
-          >
+        <VStack alignItems="center" >
+        <Heading size="md">Name this Upload:</Heading>
+          <Field  width="200px">
             <Input
+              variant="subtle"
+              colorPalette="teal"
               size="xs"
               type="text"
               maxLength={50}
               value={name}
               onChange={(e) => setName(e.target.value)}
+              mb="10px"
             />
           </Field>
-        </Box>
+        </VStack>
 
-        {/* Dynamically add Metadata as KV Pairs */}
-        <Box>
-          <h2>Additional Data</h2>
+        <VStack>
+          <Heading size="md">Additional Data:</Heading>
           {metadataKVPairs.map((pair, index) => (
-            <Box key={index}>
+            <Box key={index} >
               <Input
                 type="text"
                 placeholder="Key"
@@ -184,40 +175,56 @@ const UploadsPage = () => {
                 onChange={(e) =>
                   handleKeyValuePairChange(index, 'key', e.target.value)
                 }
+                mb="10px"
               />
-
               <Input
-                
                 type="text"
                 placeholder="Value"
                 value={pair.value}
                 onChange={(e) =>
                   handleKeyValuePairChange(index, 'value', e.target.value)
                 }
+                mb="10px"
               />
-              <Button main onClick={() => deleteKeyValuePair(index)}>Delete</Button>
+              <VStack>
+              <Button size ="xs" logout onClick={() => deleteKeyValuePair(index)}>
+                Delete
+              </Button>
+              </VStack>
             </Box>
           ))}
+          <Flex justifyContent="space-between" mb="10px">
+            <Button mr="10px" main size="xs" onClick={addKeyValuePair} type="button" px="17px">
+              Add Key-Value Pair
+            </Button>
+            <Button main size="xs" onClick={deleteAllKVPairs} type="button">
+              Delete All Key-Values
+            </Button>
+          </Flex>
+        </VStack>
 
-          <Button main size="xs"  onClick={addKeyValuePair} type="button">
-            Add Key-Value Pair
-          </Button>
-          <Button main size="xs"  onClick={deleteAllKVPairs} type="button">
-            Delete All Key-Values
-          </Button>
-        </Box>
-
-        {/* Upload zone */}
         <FileUploader handleFiles={handleFiles} />
-        <Button loading={uploading} loadingText="Uploading..." main size="xs" type="submit">Submit</Button>
-
+        <VStack mb="30px">
+        <Button
+          loading={uploading}
+          loadingText="Uploading..."
+          login
+          size="xs"
+          type="submit"
+          mt="10px"
+          
+        >
+          Submit
+        </Button>
+        </VStack>
         {selectedFiles.length > 0 && (
           <UploadQueue selectedFiles={selectedFiles} deleteFile={deleteFile} />
         )}
       </form>
 
-      <ViewUploads allFiles={allFiles} />
-    </Box>
-  )
-}
-export default UploadsPage
+      <ViewUploads allFiles={allFiles} user={user}/>
+    </VStack>
+  );
+};
+
+export default UploadsPage;

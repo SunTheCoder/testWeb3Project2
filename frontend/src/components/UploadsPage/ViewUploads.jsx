@@ -32,13 +32,15 @@ const ViewUploads = ({ allFiles, user }) => {
     <Box 
       p={4} 
       borderRadius="md" 
-      shadow="md" maxH="90vh"            
-      border="2px solid"
-      borderColor="gold"
+      maxH="90vh"            
+      // border="2px solid"
+      // borderColor="gold"
       maxW= "80vw"
       bg= "radial-gradient(circle, rgba(212, 192, 139, 0.8), rgba(142, 68, 173, 0.8))" 
+      shadow="2xl" 
+      
     >
-      <Heading size="md" mb={4}>
+      <Heading size="lg" fontWeight="bold" mb={4} color="gold">
         {formattedUsername}'s Uploads
       </Heading>
       {allFiles?.length > 0 ? (
@@ -53,9 +55,10 @@ const ViewUploads = ({ allFiles, user }) => {
               
               borderRadius="md"
               shadow="sm"
-              borderWidth="1px"
-              borderColor="gold"
+              // borderWidth="1px"
+              // borderColor="gold"
               bg="rgb(220, 151, 222)" 
+              mx="20px"
 
             >
               <VStack align="start" spacing={2}>

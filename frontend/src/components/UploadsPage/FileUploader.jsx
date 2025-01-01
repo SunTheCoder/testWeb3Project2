@@ -22,6 +22,7 @@ const FileUploader = ({ handleFiles }) => {
     textAlign="center"
     color="gray.700"
     w="400px"
+    shadow="md"
     _hover={{ bg: "purple.300", cursor: "pointer" }}
   >
     Drop the files here...
@@ -36,7 +37,7 @@ const FileUploader = ({ handleFiles }) => {
     textAlign="center"
     color="gray.600"
     w="400px"
-
+    shadow="md"
     _hover={{ bg: "gray.100", cursor: "pointer" }}
   >
     Drag 'n' drop a file here, or click to select files

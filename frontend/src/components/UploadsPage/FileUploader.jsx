@@ -1,16 +1,17 @@
 import { useDropzone } from 'react-dropzone'
 import { Field } from '../ui/field'
-import { Box } from '@chakra-ui/react'
+import { Box, Heading, Input, VStack } from '@chakra-ui/react'
 
 const FileUploader = ({ handleFiles }) => {
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } =
     useDropzone({ onDrop: handleFiles })
 
   return (
-    <div>
-      <h2>Add File(s) to Upload</h2>
-      <div {...getRootProps()}>
-        <input {...getInputProps()} />
+    <Box>
+      <VStack>
+      <Heading size="md">Add File(s) to Upload</Heading>
+      <Box {...getRootProps()}>
+        <Input {...getInputProps()} />
         {isDragActive ? (
   <Box
     p={6}
@@ -42,8 +43,9 @@ const FileUploader = ({ handleFiles }) => {
   </Box>
 )}
 
-      </div>
-    </div>
+      </Box>
+      </VStack>
+    </Box>
   )
 }
 export default FileUploader

@@ -9,7 +9,10 @@ import {
   Heading, 
   VStack, 
   Separator,
-  Input
+  Input,
+  Text,
+  Flex,
+  HStack
 } from '@chakra-ui/react';
 import { Field } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
@@ -135,27 +138,30 @@ const UploadsPage = () => {
   };
 
   return (
-    <VStack >
-    <Heading size="lg" mb={6} textAlign="center">
+    <VStack gap={10}>
+    {/* <Heading size="lg" mb={6} textAlign="center">
       Uploads Manager
-    </Heading>
+    </Heading> */}
       <form onSubmit={handleSubmit}>
-        <Box>
-          <Field label="Name this Upload" width="200px">
+        <VStack alignItems="center" >
+        <Heading size="md">Name this Upload:</Heading>
+          <Field  width="200px">
             <Input
+              
               size="xs"
               type="text"
               maxLength={50}
               value={name}
               onChange={(e) => setName(e.target.value)}
+              mb="10px"
             />
           </Field>
-        </Box>
+        </VStack>
 
-        <Box >
-          <h2>Additional Data</h2>
+        <VStack>
+          <Heading size="md">Additional Data:</Heading>
           {metadataKVPairs.map((pair, index) => (
-            <Box key={index}>
+            <Box key={index} >
               <Input
                 type="text"
                 placeholder="Key"
@@ -163,6 +169,7 @@ const UploadsPage = () => {
                 onChange={(e) =>
                   handleKeyValuePairChange(index, 'key', e.target.value)
                 }
+                mb="10px"
               />
               <Input
                 type="text"
@@ -171,31 +178,39 @@ const UploadsPage = () => {
                 onChange={(e) =>
                   handleKeyValuePairChange(index, 'value', e.target.value)
                 }
+                mb="10px"
               />
-              <Button main onClick={() => deleteKeyValuePair(index)}>
+              <VStack>
+              <Button size ="xs" logout onClick={() => deleteKeyValuePair(index)}>
                 Delete
               </Button>
+              </VStack>
             </Box>
           ))}
-          <Button main size="xs" onClick={addKeyValuePair} type="button">
-            Add Key-Value Pair
-          </Button>
-          <Button main size="xs" onClick={deleteAllKVPairs} type="button">
-            Delete All Key-Values
-          </Button>
-        </Box>
+          <Flex justifyContent="space-between" mb="10px">
+            <Button mr="10px" main size="xs" onClick={addKeyValuePair} type="button" px="17px">
+              Add Key-Value Pair
+            </Button>
+            <Button main size="xs" onClick={deleteAllKVPairs} type="button">
+              Delete All Key-Values
+            </Button>
+          </Flex>
+        </VStack>
 
         <FileUploader handleFiles={handleFiles} />
+        <VStack>
         <Button
           loading={uploading}
           loadingText="Uploading..."
-          main
+          login
           size="xs"
           type="submit"
+          mt="10px"
+          
         >
           Submit
         </Button>
-
+        </VStack>
         {selectedFiles.length > 0 && (
           <UploadQueue selectedFiles={selectedFiles} deleteFile={deleteFile} />
         )}

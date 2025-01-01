@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { Alert } from "@/components/ui/alert";
 import { useState } from 'react';
 
-const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
+const ViewUploads = ({ allFiles, setAllFiles, user }) => {
   const formattedUsername = user.username.slice(0, 1).toUpperCase() + user.username.slice(1).toLowerCase();
 
   const [editingFileId, setEditingFileId] = useState(null);
@@ -14,7 +14,6 @@ const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
   const unpinFile = async (id, hash) => {
     try {
       console.log('Attempting to delete file with ID and hash:', id, hash);
-      
       const unpin = await pinata.unpin([hash]);
       if (unpin) {
         const res = await fetch(`/api/uploads/${id}/${hash}`, {
@@ -27,20 +26,18 @@ const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
         const data = await res.json();
         console.log('Deleted file response:', data);
         alert(data.message);
-
         setAllFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
-
       }
     } catch (error) {
       console.error('Error during deletion:', error);
     }
   };
-  
 
   const handleEditMetadata = (fileId, currentMetadata) => {
     setEditingFileId(fileId);
     setEditedMetadata(Object.entries(currentMetadata || {}).map(([key, value]) => ({ key, value })));
   };
+
 
   const handleMetadataChange = (index, field, value) => {
     setEditedMetadata((prev) => {
@@ -50,6 +47,14 @@ const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
     });
   };
 
+  const deleteMetadataField = (index) => {
+    setEditedMetadata((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const addMetadataField = () => {
+    setEditedMetadata((prev) => [...prev, { key: '', value: '' }]);
+  };
+
   const saveMetadata = async (fileId) => {
     setIsSaving(true);
     try {
@@ -57,13 +62,13 @@ const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
         acc[key] = value;
         return acc;
       }, {});
-  
-      const res = await fetch(`/api/uploads/${fileId}`, { // Ensure fileId matches backend's expectation
+
+      const res = await fetch(`/api/uploads/${fileId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ upload_metadata: newMetadata }),
       });
-  
+
       if (res.ok) {
         alert('Metadata updated successfully!');
         setEditingFileId(null);
@@ -71,12 +76,11 @@ const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
         console.error('Error saving metadata:', await res.text());
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error during metadata save:', error);
     } finally {
       setIsSaving(false);
     }
   };
-  
 
   return (
     <Box
@@ -120,21 +124,21 @@ const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
                     href={file.gatewayUrl}
                     target="_blank"
                     rel="noreferrer"
-                    size="sm"
+                    size="xs"
+                    login
                   >
                     View Upload
                   </Button>
                   <Button
-                    colorScheme="red"
-                    size="sm"
+                    logout
+                    size="xs"
                     onClick={() => unpinFile(file.id, file.ipfsHash)}
-
                   >
                     Delete
                   </Button>
                   <Button
-                    colorScheme="blue"
-                    size="sm"
+                    login
+                    size="xs"
                     onClick={() => handleEditMetadata(file.id, file.uploadMetadata)}
                   >
                     Edit Metadata
@@ -157,16 +161,29 @@ const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
                           value={value}
                           onChange={(e) => handleMetadataChange(index, 'value', e.target.value)}
                         />
+                        <Button
+                          size="xs"
+                          logout
+                          onClick={() => deleteMetadataField(index)}
+                        >
+                          Delete
+                        </Button>
                       </HStack>
                     ))}
+                    <HStack>
+                    <Button size="xs" login onClick={addMetadataField}>
+                      Add Field
+                    </Button>
                     <Button
-                      colorScheme="green"
-                      size="sm"
+                      login
+                      size="xs"
                       onClick={() => saveMetadata(file.id)}
                       isLoading={isSaving}
+                      
                     >
                       Save
                     </Button>
+                    </HStack>
                   </Box>
                 )}
               </VStack>

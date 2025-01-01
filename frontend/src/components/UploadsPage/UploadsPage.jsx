@@ -147,7 +147,8 @@ const UploadsPage = () => {
         <Heading size="md">Name this Upload:</Heading>
           <Field  width="200px">
             <Input
-              
+              variant="subtle"
+              colorPalette="teal"
               size="xs"
               type="text"
               maxLength={50}

@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { Alert } from "@/components/ui/alert";
 import { useState } from 'react';
 
-const ViewUploads = ({ allFiles, user }) => {
+const ViewUploads = ({ allFiles,  setAllFiles, user }) => {
   const formattedUsername = user.username.slice(0, 1).toUpperCase() + user.username.slice(1).toLowerCase();
 
   const [editingFileId, setEditingFileId] = useState(null);
@@ -27,6 +27,9 @@ const ViewUploads = ({ allFiles, user }) => {
         const data = await res.json();
         console.log('Deleted file response:', data);
         alert(data.message);
+
+        setAllFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
+
       }
     } catch (error) {
       console.error('Error during deletion:', error);

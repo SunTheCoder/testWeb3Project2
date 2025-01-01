@@ -222,7 +222,7 @@ const UploadsPage = () => {
         )}
       </form>
 
-      <ViewUploads allFiles={allFiles} user={user}/>
+      <ViewUploads allFiles={allFiles} setAllFiles={setAllFiles} user={user}/>
     </VStack>
   );
 };

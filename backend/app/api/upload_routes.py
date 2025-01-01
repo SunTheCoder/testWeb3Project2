@@ -41,26 +41,44 @@ def add_to_database():
 		return jsonify({'uploads': new_upload.to_dict()}), 201
 	except Exception as e:
 		return {'errors': str(e)}, 500
+	
+@upload_routes.route('/<file_id>', methods=['PUT'])
+def update_metadata(file_id):
+    data = request.get_json()
+
+    if not data or 'upload_metadata' not in data:
+        return jsonify({'error': 'Invalid input'}), 400
+
+    try:
+        # Retrieve the file from the database using the file_id
+        upload = Upload.query.get(file_id)  # Query by primary key (id)
+        if not upload:
+            return jsonify({'error': 'File not found'}), 404
+
+        # Update the metadata
+        upload.upload_metadata = data['upload_metadata']
+        db.session.commit()
+
+        return jsonify({'message': 'Metadata updated successfully', 'upload': upload.to_dict()}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
-@upload_routes.route('/<cid>', methods=['GET', 'DELETE'])
-def get_upload_information(cid):
-	if not cid or cid == '':
-		return 'Error: Not Found', 400
-	if request.method == 'DELETE':
-		upload = Upload.query.filter_by(ipfs_hash=cid).first()
-		if not upload:
-			return jsonify({'error': 'File not found'}), 404
-		db.session.delete(upload)
-		db.session.commit()
-		return jsonify({'message': 'deleted successfully'}), 200
-	try:
-		res = verify_ipfs_hash(cid)
 
-		if not res:
-			return jsonify({'error': 'File not found'}), 404
+@upload_routes.route('/<int:id>/<cid>', methods=['DELETE'])
+def delete_upload(id, cid):
+    if not cid or not id:
+        return jsonify({'error': 'Invalid ID or CID'}), 400
+    
+    # Ensure the combination of `id` and `ipfs_hash` is used
+    upload = Upload.query.filter_by(id=id, ipfs_hash=cid).first()
+    if not upload:
+        return jsonify({'error': 'File not found'}), 404
+    
+    # Log the file being deleted for debugging
+    print('Deleting upload:', upload.to_dict())
 
-		upload = Upload.query.filter_by(ipfs_hash=cid).first()
-		return jsonify(upload.to_dict()), 200
-	except Exception as e:
-		return jsonify({'error': str(e)}), 500
+    db.session.delete(upload)
+    db.session.commit()
+    return jsonify({'message': 'Deleted successfully'}), 200
+

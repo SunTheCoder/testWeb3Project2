@@ -5,6 +5,7 @@ import { Alert } from "@/components/ui/alert"
 
 
 
+
 const ViewUploads = ({ allFiles, user }) => {
 
   const formattedUsername = user.username.slice(0,1).toUpperCase() + user.username.slice(1).toLowerCase()
@@ -57,7 +58,7 @@ const ViewUploads = ({ allFiles, user }) => {
               shadow="sm"
               // borderWidth="1px"
               // borderColor="gold"
-              bg="rgb(220, 151, 222)" 
+              bg="purple.100" 
               mx="20px"
 
             >
@@ -82,15 +83,18 @@ const ViewUploads = ({ allFiles, user }) => {
                 )}
                 <Separator />
                 <HStack spacing={4}>
-                  <Link
-                    href={file.gatewayUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    color="gold"
-                    fontWeight="bold"
-                  >
-                    View Upload{file.numberOfFiles > 1 ? 's' : ''}
-                  </Link>
+                <Button
+                  as="a"
+                  login
+                  href={file.gatewayUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  
+                  size="sm"
+                >
+                  View Upload{file.numberOfFiles > 1 ? 's' : ''}
+                </Button>
+
                   <Button
                     logout
                     size="sm"

@@ -29,11 +29,12 @@ const UploadQueue = ({ selectedFiles, deleteFile }) => {
             <HStack
               key={index}
               p={3}
-              bg="white"
+              bg="purple.100" 
+
               borderRadius="md"
               shadow="sm"
-              borderWidth="1px"
-              borderColor="gray.200"
+              // borderWidth="1px"
+              // borderColor="gray.200"
               align="center"
               spacing={4}
             >

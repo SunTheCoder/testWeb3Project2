@@ -4,7 +4,13 @@ import { useSelector } from 'react-redux';
 import ViewUploads from './ViewUploads';
 import UploadQueue from './UploadQueue';
 import FileUploader from './FileUploader';
-import { Box, Input } from '@chakra-ui/react';
+import { 
+  Box, 
+  Heading, 
+  VStack, 
+  Separator,
+  Input
+} from '@chakra-ui/react';
 import { Field } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
 
@@ -129,8 +135,10 @@ const UploadsPage = () => {
   };
 
   return (
-    <Box>
-      <h1>Uploads</h1>
+    <VStack >
+    <Heading size="lg" mb={6} textAlign="center">
+      Uploads Manager
+    </Heading>
       <form onSubmit={handleSubmit}>
         <Box>
           <Field label="Name this Upload" width="200px">
@@ -144,7 +152,7 @@ const UploadsPage = () => {
           </Field>
         </Box>
 
-        <Box>
+        <Box >
           <h2>Additional Data</h2>
           {metadataKVPairs.map((pair, index) => (
             <Box key={index}>
@@ -193,8 +201,8 @@ const UploadsPage = () => {
         )}
       </form>
 
-      <ViewUploads allFiles={allFiles} />
-    </Box>
+      <ViewUploads allFiles={allFiles} user={user}/>
+    </VStack>
   );
 };
 

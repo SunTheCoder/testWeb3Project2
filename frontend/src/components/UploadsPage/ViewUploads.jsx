@@ -37,7 +37,7 @@ const ViewUploads = ({ allFiles, user }) => {
       // borderColor="gold"
       maxW= "80vw"
       bg= "radial-gradient(circle, rgba(212, 192, 139, 0.8), rgba(142, 68, 173, 0.8))" 
-      shadow="2xl" 
+      shadow="lg" 
       
     >
       <Heading size="2xl" fontWeight="bold" mb={4} color="gold" textAlign="center">

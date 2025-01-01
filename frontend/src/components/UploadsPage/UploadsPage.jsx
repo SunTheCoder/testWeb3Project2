@@ -138,7 +138,12 @@ const UploadsPage = () => {
   };
 
   return (
-    <VStack gap={10}>
+    <VStack 
+      gap={10}        
+      maxH="90vh" 
+      p="50px"
+      overflowY="auto"
+>
     {/* <Heading size="lg" mb={6} textAlign="center">
       Uploads Manager
     </Heading> */}

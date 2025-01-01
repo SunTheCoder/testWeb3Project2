@@ -199,7 +199,7 @@ const UploadsPage = () => {
         </VStack>
 
         <FileUploader handleFiles={handleFiles} />
-        <VStack>
+        <VStack mb="30px">
         <Button
           loading={uploading}
           loadingText="Uploading..."

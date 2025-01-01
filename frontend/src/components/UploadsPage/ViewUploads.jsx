@@ -40,7 +40,7 @@ const ViewUploads = ({ allFiles, user }) => {
       shadow="2xl" 
       
     >
-      <Heading size="lg" fontWeight="bold" mb={4} color="gold">
+      <Heading size="2xl" fontWeight="bold" mb={4} color="gold" textAlign="center">
         {formattedUsername}'s Uploads
       </Heading>
       {allFiles?.length > 0 ? (

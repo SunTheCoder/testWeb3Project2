@@ -40,6 +40,7 @@ const buttonRecipe = defineConfig({
           },
           
     },
+    // cancel, delete, logout
     logout: {
         true: {
             borderRadius: "sm",

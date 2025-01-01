@@ -46,7 +46,7 @@ const ViewUploads = ({ allFiles, user }) => {
             maxH="500px" 
   overflowY="auto"
         >
-          {allFiles.map((file) => (
+          {[...allFiles].reverse().map((file) => (
             <Box
               key={file.id}
               p={4}
@@ -83,12 +83,13 @@ const ViewUploads = ({ allFiles, user }) => {
                     href={file.gatewayUrl}
                     target="_blank"
                     rel="noreferrer"
-                    color="teal.500"
+                    color="gold"
                     fontWeight="bold"
                   >
                     View Upload{file.numberOfFiles > 1 ? 's' : ''}
                   </Link>
                   <Button
+                    logout
                     size="sm"
                     colorScheme="red"
                     onClick={() => unpinFile(file.ipfsHash)}

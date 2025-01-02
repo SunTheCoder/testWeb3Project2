@@ -154,6 +154,7 @@ const UploadsPage = () => {
             <Input
               variant="subtle"
               colorPalette="teal"
+              _dark={{bg: "rgb(71, 39, 72)"}}
               size="xs"
               type="text"
               maxLength={50}

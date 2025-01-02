@@ -19,6 +19,7 @@ const FileUploader = ({ handleFiles }) => {
     borderColor="gold"
     borderRadius="md"
     bg="purple.200"
+    _dark={{bg: "rgb(71, 39, 72)"}}
     textAlign="center"
     color="gray.700"
     w="400px"
@@ -33,7 +34,9 @@ const FileUploader = ({ handleFiles }) => {
     border="2px dashed"
     borderColor="gold"
     borderRadius="md"
-    bg="purple.100"
+    bg="purple.200"
+    _dark={{bg: "rgb(71, 39, 72)"}}
+
     textAlign="center"
     color="gray.600"
     w="400px"

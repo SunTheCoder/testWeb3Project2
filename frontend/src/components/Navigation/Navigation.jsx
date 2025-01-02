@@ -6,6 +6,7 @@ import { ColorModeButton } from "@/components/ui/color-mode"
 import WalletDrawer from '../WalletManager/walletDrawer'
 import { TiHomeOutline } from "react-icons/ti";
 import NavigateToUploadsButton from '../UploadsPage/NavigateToUploads'
+import MetamaskButton from '../WalletManager/MetamaskButton'
 
 
 function Navigation({user}) {

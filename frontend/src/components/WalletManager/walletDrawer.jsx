@@ -49,6 +49,7 @@ import { LuInfo } from "react-icons/lu"
 
 import CreateWallet from './createWallet';
 import GasPrice from './gasPrice';
+import MetamaskButton from './MetamaskButton';
 
 const WalletDrawer = ({user}) => {
   const [defaultAccount, setDefaultAccount] = useState(null);
@@ -268,6 +269,7 @@ const WalletDrawer = ({user}) => {
                 Connect Wallet
               </Button>
               <CreateWallet />
+              <MetamaskButton />
             </HStack>
 
             {currentWallet && currentWallet !== defaultAccount && (

@@ -17,6 +17,12 @@ const HomePage = () => {
             bgClip="text"
             textFillColor="transparent"
             w="fit"
+            _dark={{
+                bg:"radial-gradient(circle, rgba(95, 85, 58, 0.8), rgba(69, 15, 92, 0.8))",
+                bgClip:"text",
+                textFillColor:"transparent",
+                w:"fit"
+             }}
             
             
             >
@@ -51,7 +57,7 @@ Why Decentralization Matters:
 In a world where control over data is paramount, our app empowers users to break free from centralized limitations. By embracing the principles of Web3, you can take ownership of your digital assets and ensure they remain available and unaltered.
 
 Who Is It For?
-Whether you're an artist, developer, researcher, or blockchain enthusiast, the Decentralized Content Hub is designed to meet your needs. From hosting artwork to archiving critical data, the possibilities are endless.
+Whether you're an artist, developer, researcher, or blockchain enthusiast, SpaceCase is designed to meet your needs. From hosting artwork to archiving critical data, the possibilities are endless.
             </Text>
 
         </Box>

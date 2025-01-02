@@ -3,6 +3,7 @@ import { pinata } from '../../utils/config';
 import { Button } from '../ui/button';
 import { Alert } from "@/components/ui/alert";
 import { useState } from 'react';
+import { Tooltip } from '../ui/tooltip';
 
 const ViewUploads = ({ allFiles, setAllFiles, user }) => {
   const formattedUsername = user.username.slice(0, 1).toUpperCase() + user.username.slice(1).toLowerCase();
@@ -164,9 +165,24 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
                 </HStack>
                 {editingFileId === file.id && (
                   <Box p={4} bg="gray.100" borderRadius="md" mt={2} w="full">
-                    <Heading size="sm" mb={2}>
-                      Edit Metadata
-                    </Heading>
+                    <HStack justifyContent="space-between">
+      <Heading size="sm" mb={2}>
+        Edit Metadata
+      </Heading>
+      <Tooltip content="Close Metadata Editing Section">
+      <Button
+        size="xxs"
+        color="white"
+        fontSize="10px"
+        onClick={() => setEditingFileId(null)}
+        px="4px"
+        py="1.5px"
+        bg="teal.800"
+      >
+        X
+      </Button>
+      </Tooltip>
+    </HStack>
                     {editedMetadata.map(({ key, value }, index) => (
                       <HStack key={index} mb={2}>
                         <Input

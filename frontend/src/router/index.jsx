@@ -3,6 +3,7 @@ import LoginFormPage from '../components/LoginFormPage'
 import SignupFormPage from '../components/SignupFormPage'
 import Layout from './Layout'
 import UploadsPage from '../components/UploadsPage/UploadsPage'
+import HomePage from '@/components/HomePage/HomePage'
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +11,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1 ></h1>,
+        element: <HomePage/>
       },
       {
         path: 'login',

@@ -25,13 +25,22 @@ const HomePage = () => {
             </VStack>
 
 
-            <Text 
-                p="30px"
+            <Heading
+                p="45px"
+                size="xl"
                 fontWeight="bold"
+                textAlign="center"
                 >
 
-            Welcome to the Decentralized Content Hub
-The Decentralized Content Hub is a groundbreaking platform that leverages the power of IPFS (InterPlanetary File System) to provide a secure, scalable, and decentralized approach to content management and sharing. Whether you're exploring Web3 or simply looking for a more resilient way to store and share your files, our app offers a seamless solution.
+            Welcome
+            </Heading>
+
+            <Text 
+                py="40px"
+                px="20px"
+                textAlign="center"
+                >
+            SpaceCase is a groundbreaking platform that leverages the power of IPFS (InterPlanetary File System) to provide a secure, scalable, and decentralized approach to content management and sharing. Whether you're exploring Web3 or simply looking for a more resilient way to store and share your files, our app offers a seamless solution.
 
 Key Features:
 Decentralized Storage with IPFS: Securely store and retrieve files in a distributed network, ensuring data permanence and resilience.

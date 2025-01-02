@@ -79,7 +79,7 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
             file.id === fileId ? { ...file, uploadMetadata: newMetadata } : file
           )
         );
-        setEditingFileId(null);
+        // setEditingFileId(null);
       } else {
         console.error('Error saving metadata:', await res.text());
       }

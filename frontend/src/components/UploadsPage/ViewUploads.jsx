@@ -62,15 +62,23 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
         acc[key] = value;
         return acc;
       }, {});
-
+  
       const res = await fetch(`/api/uploads/${fileId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ upload_metadata: newMetadata }),
       });
-
+  
       if (res.ok) {
+        const updatedFile = await res.json(); // Assuming the API returns the updated file
         alert('Metadata updated successfully!');
+        
+        // Update the file in the allFiles state
+        setAllFiles((prevFiles) =>
+          prevFiles.map((file) =>
+            file.id === fileId ? { ...file, uploadMetadata: newMetadata } : file
+          )
+        );
         setEditingFileId(null);
       } else {
         console.error('Error saving metadata:', await res.text());
@@ -81,6 +89,16 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
       setIsSaving(false);
     }
   };
+  
+  const hasUnsavedChanges = (fileId) => {
+    const currentMetadata = allFiles.find((file) => file.id === fileId)?.uploadMetadata || {};
+    const editedMetadataObject = editedMetadata.reduce((acc, { key, value }) => {
+      acc[key] = value;
+      return acc;
+    }, {});
+    return JSON.stringify(currentMetadata) !== JSON.stringify(editedMetadataObject);
+  };
+  
 
   return (
     <Box
@@ -178,6 +196,8 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
                       login
                       size="xs"
                       onClick={() => saveMetadata(file.id)}
+                      isDisabled={!hasUnsavedChanges(file.id)}
+
                       isLoading={isSaving}
                       
                     >

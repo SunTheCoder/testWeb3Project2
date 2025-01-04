@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { Field } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
+import { toaster } from '../ui/toaster';
 
 const UploadsPage = () => {
   const user = useSelector((state) => state.session.user);
@@ -120,9 +121,20 @@ const UploadsPage = () => {
         if (res.ok) {
           const data = await res.json();
           setAllFiles((prevFiles) => [...prevFiles, data.uploads]); // Add new upload to the list
-          alert('Upload successful');
+          toaster.create({
+            title: 'File Uploaded',
+            description: 'File uploaded successfully.',
+            type:'success',
+            duration: 5000,
+          });
         } else {
           console.error('Error uploading file:', await res.text());
+          toaster.create({
+            title: 'Error Uploading File',
+            description: 'Failed to upload file. Please try again.',
+            type:'error',
+            duration: 5000,
+          });
         }
       }
 
@@ -132,6 +144,12 @@ const UploadsPage = () => {
       setSelectedFiles([]);
     } catch (error) {
       console.error('Error during upload:', error);
+      toaster.create({
+        title: 'Error Uploading File',
+        description: 'Failed to upload file. Please try again.',
+        type:'error',
+        duration: 5000,
+      });
     } finally {
       setUploading(false);
     }

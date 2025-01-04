@@ -4,6 +4,7 @@ import { Button } from '../ui/button';
 import { Alert } from "@/components/ui/alert";
 import { useState } from 'react';
 import { Tooltip } from '../ui/tooltip';
+import { toaster } from '../ui/toaster';
 
 const ViewUploads = ({ allFiles, setAllFiles, user }) => {
   const formattedUsername = user.username.slice(0, 1).toUpperCase() + user.username.slice(1).toLowerCase();
@@ -26,8 +27,14 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
         }
         const data = await res.json();
         console.log('Deleted file response:', data);
-        alert(data.message);
+        // alert(data.message);
         setAllFiles((prevFiles) => prevFiles.filter((file) => file.id !== id));
+        toaster.create({
+          title: 'File Unpinned',
+          description: 'File has been successfully unpinned.',
+          type:'success',
+          duration: 5000,
+        });
       }
     } catch (error) {
       console.error('Error during deletion:', error);
@@ -72,7 +79,12 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
   
       if (res.ok) {
         const updatedFile = await res.json(); // Assuming the API returns the updated file
-        alert('Metadata updated successfully!');
+        toaster.create({
+          title: 'Metadata Saved',
+          description: 'File metadata has been successfully saved.',
+          type:'success',
+          duration: 5000,
+        });
         
         // Update the file in the allFiles state
         setAllFiles((prevFiles) =>
@@ -83,9 +95,21 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
         // setEditingFileId(null);
       } else {
         console.error('Error saving metadata:', await res.text());
+        toaster.create({
+          title: 'Error Saving Metadata',
+          description: 'Failed to save file metadata. Please try again.',
+          type:'error',
+          duration: 5000,
+        });
       }
     } catch (error) {
       console.error('Error during metadata save:', error);
+      toaster.create({
+        title: 'Error Saving Metadata',
+        description: 'Failed to save file metadata. Please try again.',
+        type:'error',
+        duration: 5000,
+      });
     } finally {
       setIsSaving(false);
     }

@@ -52,18 +52,24 @@ function SignupFormModal() {
         toaster.create({
           title: 'Signup Failed',
           description: serverResponse.general || 'Signup failed. Please try again.',
+          type: 'error',
+          duration: 5000,
         });
       } else {
         closeModal();
         toaster.create({
           title: 'Signup Successful',
           description: 'You have successfully signed up!',
+          type:'success',
+          duration: 5000,
         });
       }
     } catch (err) {
       toaster.create({
         title: 'Unexpected Error',
         description: 'An unexpected error occurred. Please try again later.',
+        type: 'error',
+        duration: 5000,
       });
       console.error('Signup error:', err);
     }

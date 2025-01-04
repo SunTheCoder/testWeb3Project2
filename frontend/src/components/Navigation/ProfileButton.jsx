@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@chakra-ui/react'; // For consistent styling with Chakra
 import { FaUserCircle } from 'react-icons/fa';
 import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from '@/components/ui/menu';
@@ -9,11 +10,14 @@ import SignupFormModal from '../SignupFormModal';
 
 function ProfileButton() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const user = useSelector((store) => store.session.user);
 
   const logout = (e) => {
     e.preventDefault();
     dispatch(thunkLogout());
+    navigate('/'); // Redirect to the home page
   };
 
   return (

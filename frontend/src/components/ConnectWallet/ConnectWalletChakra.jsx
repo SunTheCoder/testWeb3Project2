@@ -67,7 +67,14 @@ const userId = (user?.id || null);
   
         if (updateError) throw new Error("Failed to update wallet address.");
   
-        alert(`Wallet updated: ${normalizedAddress}`);
+        // alert(`Wallet updated: ${normalizedAddress}`);
+        toaster.create({
+          title: 'Wallet Updated',
+          description: `Wallet address updated successfully with value: ${normalizedAddress}.`,
+          type:'success',
+          duration: 5000,
+        });
+
         dispatch(
             updateUser({walletAddress: normalizedAddress})
         )
@@ -78,7 +85,13 @@ const userId = (user?.id || null);
   
         if (insertError) throw new Error("Failed to save wallet address.");
   
-        alert(`Wallet saved: ${normalizedAddress}`);
+        // alert(`Wallet saved: ${normalizedAddress}`);
+        toaster.create({
+          title: 'Wallet Saved',
+          description: `Wallet address saved successfully with value: ${normalizedAddress}.`,
+          type:'success',
+          duration: 5000,
+        });
       }
     } catch (error) {
       console.error("Error connecting wallet:", error);

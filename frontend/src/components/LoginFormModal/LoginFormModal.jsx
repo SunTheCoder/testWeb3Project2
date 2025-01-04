@@ -39,6 +39,8 @@ function LoginFormModal() {
       toaster.create({
         title: 'Validation Error',
         description: 'Please fill in all required fields.',
+        type: 'error',
+        duration: 5000,
       });
       return;
     }
@@ -57,6 +59,8 @@ function LoginFormModal() {
         toaster.create({
           title: 'Login Failed',
           description: serverResponse.general || 'Logging in failed. Please try again.',
+          type: 'error',
+          duration: 5000,
         });
       } else {
         // Successful login
@@ -64,6 +68,8 @@ function LoginFormModal() {
         toaster.create({
           title: 'Login Successful',
           description: 'You have logged in successfully.',
+          type: 'success',
+          duration: 5000,
         });
       }
     } catch (err) {
@@ -71,6 +77,8 @@ function LoginFormModal() {
       toaster.create({
         title: 'Unexpected Error',
         description: 'An unexpected error occurred. Please try again later.',
+        type: 'error',
+        duration: 5000,
       });
       console.error('Login error:', err);
     }

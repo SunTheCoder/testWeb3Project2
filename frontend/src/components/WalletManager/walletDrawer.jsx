@@ -50,6 +50,7 @@ import { LuInfo } from "react-icons/lu"
 import CreateWallet from './createWallet';
 import GasPrice from './gasPrice';
 import MetamaskButton from './MetamaskButton';
+import { toaster } from '../ui/toaster';
 
 const WalletDrawer = ({user}) => {
   const [defaultAccount, setDefaultAccount] = useState(null);
@@ -58,7 +59,6 @@ const WalletDrawer = ({user}) => {
   const [currentWallet, setCurrentWallet] = useState(null);
   const [loading, setLoading] = useState(true);
   const [promptUpdate, setPromptUpdate] = useState(false);
-
   
   const blockchainDescription = "Blockchain is a digital ledger technology that records transactions across a network of computers in a secure, transparent, and decentralized manner. Each transaction is grouped into a \"block,\" and these blocks are linked together in a chronological sequence, forming a \"chain.\""
 
@@ -197,9 +197,30 @@ const WalletDrawer = ({user}) => {
     }
   };
 
-//   if (!user) {
-//     return null;
-//   }
+  if (!user) {
+    return (
+      <Button
+        main
+        fontWeight="bold"
+        size="xs"
+        color="gold"
+        _dark={{ color: "gold" }}
+        ml={5}
+        onClick={() =>
+          toaster.create({
+            title: 'Login Required',
+            description: 'You must be logged in to access the upload manager.',
+            type: 'error',
+            duration: 5000,
+          })
+        }
+      >
+        <TbWallet />
+        Wallet Manager
+      </Button>
+    );
+  }
+  
 
   return (
     <DrawerRoot placement="start" size="sm" >

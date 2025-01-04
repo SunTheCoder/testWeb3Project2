@@ -32,7 +32,7 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
         toaster.create({
           title: 'File Unpinned',
           description: 'File has been successfully unpinned.',
-          status:'success',
+          type:'success',
           duration: 5000,
         });
       }
@@ -79,7 +79,12 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
   
       if (res.ok) {
         const updatedFile = await res.json(); // Assuming the API returns the updated file
-        alert('Metadata updated successfully!');
+        toaster.create({
+          title: 'Metadata Saved',
+          description: 'File metadata has been successfully saved.',
+          type:'success',
+          duration: 5000,
+        });
         
         // Update the file in the allFiles state
         setAllFiles((prevFiles) =>
@@ -90,9 +95,21 @@ const ViewUploads = ({ allFiles, setAllFiles, user }) => {
         // setEditingFileId(null);
       } else {
         console.error('Error saving metadata:', await res.text());
+        toaster.create({
+          title: 'Error Saving Metadata',
+          description: 'Failed to save file metadata. Please try again.',
+          type:'error',
+          duration: 5000,
+        });
       }
     } catch (error) {
       console.error('Error during metadata save:', error);
+      toaster.create({
+        title: 'Error Saving Metadata',
+        description: 'Failed to save file metadata. Please try again.',
+        type:'error',
+        duration: 5000,
+      });
     } finally {
       setIsSaving(false);
     }

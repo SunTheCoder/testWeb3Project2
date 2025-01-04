@@ -15,7 +15,7 @@ function NavigateToUploadsButton() {
       toaster.create({
         title: 'Login Required',
         description: 'You must be logged in to access the upload manager.',
-        status: 'error',
+        type: 'error',
         duration: 5000,
       })
     }

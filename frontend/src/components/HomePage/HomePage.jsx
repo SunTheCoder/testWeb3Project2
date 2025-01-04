@@ -45,6 +45,7 @@ const HomePage = () => {
                 py="40px"
                 px="20px"
                 textAlign="center"
+                fontWeight="bold"
                 >
             SpaceCase is a groundbreaking platform that leverages the power of IPFS (InterPlanetary File System) to provide a secure, scalable, and decentralized approach to content management and sharing. Whether you're exploring Web3 or simply looking for a more resilient way to store and share your files, our app offers a seamless solution.
 
